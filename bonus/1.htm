@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<!-- saved from url=(0027)http://0.0.0.0:8080/bonus/1 -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Bonus1</title>
+<link rel="stylesheet" type="text/css" href="./bonus1_files/style.css">
+</head>
+<body>
+<h1 id="noeclipse">No Eclipse!</h1>
+
+<p>Welcome to the bonus section, me hearties! Eclipse, and other integrated development environments (IDEs) are for the weak of heart. If you want to understand how <em>real</em> coding is done, we’re going to abandon these land-lubber tools.</p>
+
+<p>Install <a href="http://www.sublimetext.com/">Sublime Text 2</a>. <em>That’s</em> where we’re going to be doing our coding from now on. It has cool themes for ye picky coders, and you can make it as pretty as you wish.</p>
+
+<p>Now, how do we run the code?</p>
+
+<p>On a Mac, you have an application called <code>Terminal</code>. You can search through your applications and you’ll find it. Alternatively, if you want to be quick, you can use <code>Command-Space</code> keystrokes to activate Spotlight search, where you can search for <code>Terminal</code>.</p>
+
+<p>Open it up. Type in <code>cd ~/Desktop</code> and hit return. You’re now in your Desktop folder! Want to see what’s inside? Type <code>ls</code>, and hit return. You’ll see all the files in your Desktop folder. Let’s create a new folder specially for CS1.</p>
+
+<p>Type in <code>mkdir Bonus_CS1</code> (and hit return). We’ve created a directory inside of <code>Desktop</code> folder. You can see the folder icon appear on your desktop. Then, type in <code>cd Bonus_CS1</code> (return, once more). As you can see, the command <code>cd</code> is to <em>change directories</em>. <code>mkdir</code> is a command to <em>make a directory</em>.</p>
+
+<p>Now we’re inside the <code>Bonus_CS1</code> folder. Let’s create a sample Python program!</p>
+
+<p>Open up Sublime Text 2. On the bottom right, you can see that Sublime wants you to tell it what language you’ll be coding in. There are many, <em>many</em> options.</p>
+
+<figure>
+<img src="./bonus1_files/Bonus1Image1.jpg" alt="">
+<figcaption></figcaption></figure>
+
+<p>Click on the “Plain Text” and scroll down to select “Python”. Python is a sub-folder that contains two options:</p>
+
+<ul>
+<li>Python</li>
+<li>Regular Expressions</li>
+</ul>
+
+<p>Choose the ordinary Python option.</p>
+
+<p>Let’s put the following code into the file.</p>
+
+<pre><code>print "Dude, Eclipse is for n00bs."
+</code></pre>
+
+<p>Okay, now how do we run this code? If you’re on a Mac, you’re lucky. Python is already installed for you! If not, you’re still lucky, since the course instructions made you install Python anyways.</p>
+
+<p>Let’s save this file as <code>example1.py</code> <em>within the folder</em> <code>Bonus_CS1</code>. In the future, you won’t have to scroll through the language option and select Python in Eclipse, because it will automatically detect the <code>.py</code> at the end of the file name and realize it must be Python.</p>
+
+<p>Similarly, had you saved the file first (before typing anything inside), Sublime will automatically choose Python as the language for you. Now that we’ve saved the file, we can quite Sublime and go back to Terminal.</p>
+
+<p>Type <code>pwd</code>, which stands for <em>print working directory</em>. It should show that you’re inside the <code>Bonus_CS1</code> folder. For me, it outputs <code>/Users/chanchan/Desktop/Bonus_CS1</code>. If your name were John, it might show <code>/Users/John/Desktop/Bonus_CS1</code>. Either way, that last part should show <code>Bonus_CS1</code>. That’s the most important part.</p>
+
+<p>Great, now let’s run the code! Type in <code>python example1.py</code> (and hit enter). It should output what we printed!</p>
+
+<p>That’s how you run code without Eclipse! Pretty neat. <code>:)</code></p>
+
+<p>Keep in mind that Python by itself will tell you all the same errors that eclipse does. For example, if you typed in <code>prin</code> instead of <code>print</code> in Sublime, and then ran <code>python example1.py</code> in your terminal, it would show you the following error:</p>
+
+<pre><code>    prin 'hello there'
+                     ^
+SyntaxError: invalid syntax
+</code></pre>
+
+<p>Great! Now you don’t need Eclipse anymore. You’ve taken your first step into not being a <code>n00b</code>.</p>
+
+</body></html>

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<!-- saved from url=(0027)http://0.0.0.0:8080/bonus/2 -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Bonus2</title>
+<link rel="stylesheet" type="text/css" href="./bonus2_files/style.css">
+</head>
+<body>
+<h1 id="functionsinfunctions">Functions in Functions</h1>
+
+<p>In Python, you can actually have functions <em>inside</em> of functions.</p>
+
+<pre><code>def best_movie(n):
+    def karen():
+        print "There's a 30% chance that it's already raining!"
+
+    def gretchen():
+        print "Oh my GOD Karen, you're so stupid!"
+
+    Karen()
+    Gretchen()
+</code></pre>
+
+<p>Seems interesting. But why would this matter? Can’t we just do the print statements inside of the original <code>best_movie</code> function?</p>
+
+<h2 id="partialfunctions">Partial Functions</h2>
+
+<p>To begin to understand the usefulness of this feature, we need to introduce the concept of <strong>partial functions</strong>.</p>
+
+<pre><code>def add_two_nums(a, b):
+    return a + b
+</code></pre>
+
+<p>This function is simple enough. It takes two parameters, <code>a</code> and <code>b</code>, and gives back the result of the two added together. But what if we wanted to </p>
+
+<pre><code>&gt;&gt;&gt; print add_two_nums(1, 1)
+2
+</code></pre>
+
+<p>Voila! The axioms of mathematics hold and <code>1 + 1</code> is indeed <code>2</code>.</p>
+
+<p>So what the heck is a <em>partial</em> function? Check this out.</p>
+
+<pre><code>from functools import partial
+
+add_one = partial(add_two_nums, 1)
+</code></pre>
+
+<p>So now what happens if we run <code>add_three</code>?</p>
+
+<pre><code>&gt;&gt;&gt; print add_one(1)
+2
+&gt;&gt;&gt; print add_one(3)
+4
+</code></pre>
+
+<p>Wow! We created a function that adds <code>1</code> to any input given. We can think of the <code>add_three</code> function almost like the following:</p>
+
+<pre><code>def add_two(1, b):
+    1 + b
+</code></pre>
+
+<p>Note that the above is <em>not</em> legal Python – we are using it just to illustrate the concept. In other words, a partial function is one where we can give only <em>some</em> of the parameters of a function, and create a new function that takes the rest of the parameters.</p>
+
+<p>Here is a more <a href="http://www.johndcook.com/blog/2008/12/19/partial-function-application-in-python/">complicated example</a>.</p>
+
+<pre><code>from functools import partial
+
+def f(a, b, c, x):
+    return 1000*a + 100*b + 10*c + x
+
+g = partial(f, 3, 1, 4)
+
+print g(5)
+</code></pre>
+
+<p>Which will print <code>3145</code>.</p>
+
+<h2 id="closure">Closure</h2>
+
+<p>Is there a way we can do this without that annoying <code>from functools import partial</code> business? Sure we can!</p>
+
+<pre><code>def power_raise(n):
+    def number(x):
+        return x ** n
+    return number
+
+square = power_raise(2)
+print square(12)
+print square(10)
+</code></pre>
+
+<p>The printed output is</p>
+
+<pre><code>144
+100
+</code></pre>
+
+<p>Wow! So we can actually create partial functions by using nested functions. This is called a <strong>closure</strong>, which is a tool to give local scope to a different function.</p>
+
+<p>We will come back to this notion of functions within functions later on. For now, it’s enough if you understand how partial functions work and how you can create them.</p>
+
+</body></html>

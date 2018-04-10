@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<!-- saved from url=(0027)http://0.0.0.0:8080/bonus/5 -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Bonus5</title>
+<link rel="stylesheet" type="text/css" href="./bonus5_files/style.css">
+</head>
+<body>
+<h1 id="inheritancediamonds">Inheritance Diamonds</h1>
+
+<h2 id="multipleinheritance">Multiple Inheritance</h2>
+
+<p>Inheritance is pretty neat! As you know, by inheriting from another class, you automatically get access to its instance variables and methods! Cool.</p>
+
+<p>But did you know that in Python, you can inherit from <em>multiple</em> classes? Check this out.</p>
+
+<p>Sidenote: for those of you who don’t know, <code>pass</code> is a keyword in Python which basically tells Python to ignore this method for now, and you’ll come back to it later. It’s a useful way of filling in methods later on without having Python complain at you.</p>
+
+<pre><code>class A(object):
+    pass
+
+class B(A):
+    pass
+
+class C(A):
+    pass
+</code></pre>
+
+<p>Here we have the standard inheritance example – you have one class, <code>A</code>, which inherits from <code>object</code>. Then you have a class <code>B</code> which inherits from class <code>A</code>. Similar to <code>B</code>, you have another class <code>C</code>, which also inherits from <code>A</code>. Nothing new so far. But Python actually allows us to do this:</p>
+
+<pre><code>class D(B, C):
+    pass
+</code></pre>
+
+<p>Woah. Class <code>D</code> inherits from both <code>B</code> <em>and</em> <code>C</code>!</p>
+
+<h2 id="methodresolutionorder">Method Resolution Order</h2>
+
+<p>Some languages, like Java, actually <em>forbid</em> multiple inheritance. Generally speaking, it’s a can of worms that Object Oriented Programs like to avoid. But Python’s philosophy is one of flexibility, and sometimes you <em>want</em> this.</p>
+
+<p>One problem that it introduces is called the <strong>inheritance diamond</strong>. Let’s take an example.</p>
+
+<pre><code>class A(object):
+    def hola(self):
+        print 'A'
+
+class B(A):
+    def hola(self):
+        print 'B'
+
+class C(A):
+    def hola(self):
+        print 'C'
+
+class D(B, C):
+    pass
+</code></pre>
+
+<p>Can you see where the “diamond” comes from?</p>
+
+<pre><code>            A
+           / \
+           B  C
+            \/
+            D
+</code></pre>
+
+<p>The above demonstrates the inheritance tree of the four classes we’ve defined, and it makes a diamond shape, roughly. The classes <code>A</code>, <code>B</code>, and <code>C</code> are quite simple.</p>
+
+<p>As we expect, <code>A().hola()</code> outputs <code>A</code>, <code>B().hola()</code> outputs <code>B</code>, and <code>C().hola()</code> outputs <code>C</code>. So here’s the question: what does <code>D().hola()</code> output!?</p>
+
+<p>Remember, <code>D</code> automatically inherits all the methods of its super classes. <code>B</code> inherits <code>A</code>’s <code>hola</code> method, but it <strong>overwrites</strong> it with its <em>own</em> <code>hola</code> method. Easy enough. Same thing with <code>C</code>. But if <code>D</code> inherits from <em>both</em> <code>B</code> <em>and</em> <code>C</code>, which <code>hola</code> method does it receive?</p>
+
+<p>This exact dilemma is why Java does not allow multiple inheritance.</p>
+
+<p>In Python, however, we have something called <strong>method resolution order</strong>. What is this? When you say <code>D().hola()</code>, the class <code>D</code> must <em>look</em> for a method <code>hola</code> somewhere. The method resolution order, or MRO, determines what order in which it finds the methods. Does it find <code>A</code>’s <code>hola</code> first, or <code>B</code>’s <code>hola</code>? These questions are determined by the MRO.</p>
+
+<pre><code>&gt;&gt;&gt; print D.__mro__
+(&lt;class '__main__.D'&gt;, &lt;class '__main__.B'&gt;, &lt;class '__main__.C'&gt;, &lt;class '__main__.A'&gt;, &lt;type 'object'&gt;)
+</code></pre>
+
+<p>Interesting. Look at the order here. First, it has everything from its own class, <code>D</code>. That makes sense. <em>Next</em>, it gets everything from class <code>B</code>. So in other words, if it can’t find <code>hola</code> in its own class, it tries to find it in class <code>B</code>. If it <em>still</em> can’t find any method named <code>hola</code>, it goes into class <code>C</code> to find it.</p>
+
+<p>So our hypothesis is that <code>D().hola()</code> should print <code>B</code>, right? Let’s test that.</p>
+
+<pre><code>&gt;&gt;&gt; D().hola()
+B
+</code></pre>
+
+<p>Voila! MRO resolves the inheritance diamond problem! Pretty nifty.</p>
+
+</body></html>

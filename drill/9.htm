@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<!-- saved from url=(0027)http://0.0.0.0:8080/drill/9 -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Drill9</title>
+<link rel="stylesheet" type="text/css" href="./drill9_files/style.css">
+</head>
+<body>
+<h1 id="binary">Binary</h1>
+
+<p>We operate on the decimal system – every digit is between <code>0</code> and <code>9</code>, and thus there are <em>ten</em> values, giving us the <em>dec</em>imal system.</p>
+
+<p>Binary is just the same way, only there are only two values: <code>0</code> and <code>1</code>.</p>
+
+<p>You can represent numbers in precisely the same way in both systems.</p>
+
+<p>Let’s examine the number <code>500</code>. How do we know what the value of <code>500</code> is? The right most digit, <code>0</code>, is the <em>ones</em> place. But what does <em>ones</em> really mean? It means whatever value is there, multiply it by <code>10^0</code> (ten to the power zero). Similarly, the <em>tens</em> place is <code>10^1</code>, the hundreds place is <code>10^2</code>, etc.</p>
+
+<p>We take the values and add them up. So we get <code>5 * 10^2 + 0 * 10^1 + 0 ^ 10^0</code>, which adds up to be <code>500</code>.</p>
+
+<p>Let’s look at a binary number now: <code>11011</code>. The process works the same way.</p>
+
+<p>Let’s make a table.</p>
+
+<table>
+<colgroup>
+<col style="text-align:center;">
+<col style="text-align:center;">
+<col style="text-align:center;">
+<col style="text-align:center;">
+</colgroup>
+
+<thead>
+<tr>
+	<th style="text-align:center;">power</th>
+	<th style="text-align:center;">2<sup>power</sup></th>
+	<th style="text-align:center;">digit</th>
+	<th style="text-align:center;">value (digit * 2<sup>power</sup>)</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+	<td style="text-align:center;">0</td>
+	<td style="text-align:center;">1</td>
+	<td style="text-align:center;">1</td>
+	<td style="text-align:center;">1</td>
+</tr>
+<tr>
+	<td style="text-align:center;">1</td>
+	<td style="text-align:center;">2</td>
+	<td style="text-align:center;">1</td>
+	<td style="text-align:center;">2</td>
+</tr>
+<tr>
+	<td style="text-align:center;">2</td>
+	<td style="text-align:center;">4</td>
+	<td style="text-align:center;">0</td>
+	<td style="text-align:center;">0</td>
+</tr>
+<tr>
+	<td style="text-align:center;">3</td>
+	<td style="text-align:center;">8</td>
+	<td style="text-align:center;">1</td>
+	<td style="text-align:center;">8</td>
+</tr>
+<tr>
+	<td style="text-align:center;">4</td>
+	<td style="text-align:center;">16</td>
+	<td style="text-align:center;">1</td>
+	<td style="text-align:center;">16</td>
+</tr>
+</tbody>
+</table>
+
+<p>So now we simply add up the <code>value</code> column: <code>1 + 2 + 0 + 8 + 16</code>, giving us our result <code>27</code>!</p>
+
+<p>This is the same process for every single number in binary.</p>
+
+<h2 id="bitwiseoperations">Bitwise Operations</h2>
+
+<p>There are several bitwise operations you need to learn, and in fact you already know them with booleans! One way to think about this is that <code>1</code> is equivalent to <code>True</code> and <code>0</code> is <code>False</code>.</p>
+
+<p>The way we define these is using <strong>truth tables</strong>. Truth tables have one column per input and one column for the output; as you can guess, every value either has to be True or False (or 0 or 1).</p>
+
+<p>The most simple is <code>!</code>, which is the bitwise equivalent of <code>not</code>.</p>
+
+<table>
+<colgroup>
+<col style="text-align:center;">
+<col style="text-align:center;">
+</colgroup>
+
+<thead>
+<tr>
+	<th style="text-align:center;">x</th>
+	<th style="text-align:center;">! x</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+	<td style="text-align:center;">0</td>
+	<td style="text-align:center;">1</td>
+</tr>
+<tr>
+	<td style="text-align:center;">1</td>
+	<td style="text-align:center;">0</td>
+</tr>
+</tbody>
+</table>
+
+<p><code>&amp;</code> is the bitwise equivalent of <code>and</code>.</p>
+
+<table>
+<colgroup>
+<col style="text-align:center;">
+<col style="text-align:center;">
+<col style="text-align:center;">
+</colgroup>
+
+<thead>
+<tr>
+	<th style="text-align:center;">x</th>
+	<th style="text-align:center;">y</th>
+	<th style="text-align:center;">x &amp; y</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+	<td style="text-align:center;">1</td>
+	<td style="text-align:center;">1</td>
+	<td style="text-align:center;">1</td>
+</tr>
+<tr>
+	<td style="text-align:center;">1</td>
+	<td style="text-align:center;">0</td>
+	<td style="text-align:center;">0</td>
+</tr>
+<tr>
+	<td style="text-align:center;">0</td>
+	<td style="text-align:center;">1</td>
+	<td style="text-align:center;">0</td>
+</tr>
+<tr>
+	<td style="text-align:center;">0</td>
+	<td style="text-align:center;">0</td>
+	<td style="text-align:center;">0</td>
+</tr>
+</tbody>
+</table>
+
+<p>This is the exact same table for <code>and</code> if you replace the <code>1</code> with <code>True</code> and <code>0</code> with <code>False</code>.</p>
+
+<p><code>|</code> is the bitwise version of <code>or</code>.</p>
+
+<table>
+<colgroup>
+<col style="text-align:center;">
+<col style="text-align:center;">
+<col style="text-align:center;">
+</colgroup>
+
+<thead>
+<tr>
+	<th style="text-align:center;">x</th>
+	<th style="text-align:center;">y</th>
+	<th style="text-align:center;">x | y</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+	<td style="text-align:center;">1</td>
+	<td style="text-align:center;">1</td>
+	<td style="text-align:center;">1</td>
+</tr>
+<tr>
+	<td style="text-align:center;">1</td>
+	<td style="text-align:center;">0</td>
+	<td style="text-align:center;">1</td>
+</tr>
+<tr>
+	<td style="text-align:center;">0</td>
+	<td style="text-align:center;">1</td>
+	<td style="text-align:center;">1</td>
+</tr>
+<tr>
+	<td style="text-align:center;">0</td>
+	<td style="text-align:center;">0</td>
+	<td style="text-align:center;">0</td>
+</tr>
+</tbody>
+</table>
+
+<p>Nothing new so far. Now we get to the new bitwise operations that we didn’t see for the booleans.</p>
+
+<p><code>xor</code> is <em>exclusive</em> or. Unlike the standard or function, <code>xor</code> is only true when just <em>one</em> of the inputs is true.</p>
+
+<table>
+<colgroup>
+<col style="text-align:center;">
+<col style="text-align:center;">
+<col style="text-align:center;">
+</colgroup>
+
+<thead>
+<tr>
+	<th style="text-align:center;">x</th>
+	<th style="text-align:center;">y</th>
+	<th style="text-align:center;">x ^ y</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+	<td style="text-align:center;">1</td>
+	<td style="text-align:center;">1</td>
+	<td style="text-align:center;">0</td>
+</tr>
+<tr>
+	<td style="text-align:center;">1</td>
+	<td style="text-align:center;">0</td>
+	<td style="text-align:center;">1</td>
+</tr>
+<tr>
+	<td style="text-align:center;">0</td>
+	<td style="text-align:center;">1</td>
+	<td style="text-align:center;">1</td>
+</tr>
+<tr>
+	<td style="text-align:center;">0</td>
+	<td style="text-align:center;">0</td>
+	<td style="text-align:center;">0</td>
+</tr>
+</tbody>
+</table>
+
+<p><code>nor</code> is simply a <code>not</code> in front of an <code>|</code>.</p>
+
+<p><code>nand</code> is a <code>!</code> in front of an <code>&amp;</code>.</p>
+
+<p><code>xnor</code> is a <code>!</code> in front of an <code>^</code>.</p>
+
+<p>Those are pretty much all of the major gates! As an exercise, see if you can write the truth tables for the last three gates that I showed you.</p>
+
+<p>Here’s a question to see if you were paying attention: How many rows does a truth table have? (Assume the number of inputs is <code>n</code>.)</p>
+
+<h2 id="booleanalgebra">Boolean Algebra</h2>
+
+<p>Boolean algebra uses these exact same gates to reduce complicated problems into simpler ones. At the heart of this is <strong>De Morgan’s Law</strong>. De Morgan’s law is quite simple: when you’re adding a <em>not</em> in front of a large boolean expression, flip the ors into ands (and vice versa) and add a not in front of each variable.</p>
+
+<p>Let’s take an example.</p>
+
+<p><code>not((not A) or (not B))</code></p>
+
+<p>Hmm. Seems needlessly messy. Surely there must be a way to reduce this. Why not De Morgan’s law? The first part says to flip ors and ands. That leaves us with this.</p>
+
+<p><code>(not A) and (not B)</code></p>
+
+<p>Then we add a not to each of the elements, giving us the following:</p>
+
+<p><code>(not not A) and (not not B)</code></p>
+
+<p>But of course two <code>not</code>s in a row cancel out, leaving us with just <code>A and B</code>! Much easier.</p>
+
+<h2 id="practiceproblems">Practice Problems</h2>
+
+<p>Let’s get used to these new fangled notations and functions.</p>
+
+<ol>
+<li><p>Convert <code>101101010111</code> to decimal.</p></li>
+<li><p>Convert <code>101101010111</code> to binary. (I’m evil, it’s true.)</p></li>
+<li><p>Simplify the following boolean expression: <code>not((True or False) and (True or False))</code></p></li>
+<li><p>Simplify the following boolean expression: <code>not(not(A XOR B) AND (B NAND A))</code></p></li>
+<li><p>Evaluate the following: <code>(1101101 XOR 0101000) NOR 1001101</code></p></li>
+<li><p>Evaluate the following: <code>(1101 OR 0011) AND (0011 XNOR 0010)</code></p></li>
+</ol>
+
+</body></html>

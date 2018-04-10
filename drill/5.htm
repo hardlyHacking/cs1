@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<!-- saved from url=(0027)http://0.0.0.0:8080/drill/5 -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Drill5</title>
+<link rel="stylesheet" type="text/css" href="./drill5_files/style.css">
+</head>
+<body>
+<h1 id="classesandobjects">Classes and Objects</h1>
+
+<h2 id="example:studentclass">Example: Student Class</h2>
+
+<p>What is a <code>class</code>? No, not CS1. In Python, <code>class</code> is a reserved word.</p>
+
+<p>A class is <strong>a collection of methods</strong>. That’s it! Let’s give an example.</p>
+
+<pre><code>class Student:
+
+    def __init__(self, name, id):
+        self.name = name
+        self.id = id
+</code></pre>
+
+<p>Here is a sample class. The only method that is defined is <code>__init__</code>. This method is special because it defines how to create objects!</p>
+
+<p>What’s an object? An object is any data belonging to a class. <strong>Everything in Python is an object.</strong> All data belongs to <em>some</em> class. The class <code>Student</code> can create <code>Student</code> objects, and every <code>Student</code> object has two attributes: a <code>name</code> and an <code>id</code>.</p>
+
+<p>How do I know that? I look at the <code>__init__</code> method which defines how to create objects. (Note that not every class has an <code>__init__</code> method. If it does not, you cannot create objects from that class.)</p>
+
+<p><em>Every</em> instance of the class <code>Student</code> (another word for objects) has those two attributes, per the <code>__init__</code> method. Pretty handy.</p>
+
+<p>Let’s create a student object and fill it with attributes.</p>
+
+<pre><code>chander = Student('Chander', '..Nice try. #topSecret')
+</code></pre>
+
+<p>That’s it! Notice to create a new object we used the <em>class</em> name, and not the <code>__init__</code> method; using the class name automatically calls the <code>__init__</code> method, and this way is preferred because Python does some other operations behind the scenes that we won’t discuss here.</p>
+
+<p>How do I access the properties of <code>chander</code>?</p>
+
+<pre><code>print chander.name
+print chander.id
+</code></pre>
+
+<p>Cool! It prints out the values we gave it. The <code>.</code> operator is used to do this. But what happens when we do an attribute we never gave?</p>
+
+<pre><code>print chander.height
+</code></pre>
+
+<p>Python spits out the following error:</p>
+
+<pre><code>AttributeError: Student instance has no attribute 'height'
+</code></pre>
+
+<p>An <code>AttributeError</code>! In this class we will refer to these as <strong>instance variables</strong>. They are the variables defined by the <code>__init__</code> method – the variables that <em>every</em> object of the <code>Student</code> class is guaranteed to have. They are also called <strong>attributes</strong>. Here, Python is saying that this particular Student object has no such attribute called “height”, and of course it is correct.</p>
+
+<p>But how is a class a collection of methods then? Well, let’s add some more methods and find out. Wouldn’t it be nice to know what their major is? No. No one cares. Let’s find out their most embarassing secret instead.</p>
+
+<pre><code>def get_secret(self):
+    return self.secret
+</code></pre>
+
+<p>Uh oh. But aren’t we going to run into the same <code>AttributeError</code> as before? Yes. So I guess we’ll have to change our <code>__init__</code> method accordingly. Here it is.</p>
+
+<pre><code>def __init__(self, name, id, secret=None):
+    if secret is None:
+        self.secret = "Nunya. Nunya beezwax."
+    else:
+        self.secret = None
+    self.name = name
+    self.id = id
+</code></pre>
+
+<p>Okay. What else? How about their hobbies.</p>
+
+<pre><code>def get_hobby(self):
+    if self.hobby == []:
+        return "I am a CS major. I have no hobbies."
+    return self.hobby
+</code></pre>
+
+<p>Darn. That <code>__init__</code> method again. Let’s make the changes.</p>
+
+<pre><code>def __init__(self, name, id, secret=None, hobby=None):
+    self.secret = "Nunya. Nunya beezwax" if secret is None else secret
+    self.name = name
+    self.id = id
+    self.hobby = [] if hobby is None else hobby
+</code></pre>
+
+<p>That last statement is Python’s version of the <code>ternary operator</code>. It’s a neat little trick that makes the two-line if-statement we did for <code>self.secret</code> into a nice little one-liner. For brevity, I changed the way we did <code>secret</code>, too.</p>
+
+<p>What we mean by “a class is a collection of methods” is that every object of the <code>Student</code> class has access to <em>every</em> method defined within that class. For example, <em>every</em> new <code>Student</code> object we create can already implement the <code>get_hobby</code> and <code>get_secret</code> methods.</p>
+
+<pre><code>chander = Student("chander", 1, "I made a twelve year-old cry in Call of Duty.")
+grumpyCat = Student("grumpyCat", 2, "No.", "No.")
+doug = Student("Doug", 3, "I have just met you, and I LOVE you!", "SQUIRREL!")
+snipe = Student("Snipe", 4, None, "Chocolate.")
+
+print snipe.get_secret()
+</code></pre>
+
+<p>Sweet. Very convenient.</p>
+
+<h2 id="selfparameter">Self Parameter</h2>
+
+<p>Surely you’ve noticed by now that every class <strong>method</strong> has <code>self</code> as the <em>first</em> parameter, but when you call the method, you don’t need to put in <code>self</code>.</p>
+
+<p>This <code>self</code> refers to the object that is calling the method. In otherwords, when you do</p>
+
+<pre><code>chander.get_hobby()
+</code></pre>
+
+<p><code>self</code> is then substituted with <code>chander</code> when that method is called. In the method headers, <code>self</code> is just a placeholder. It’s a promise to Python saying “I know this is a method, and it can’t be called by itself, but I promise that <em>some</em> object will be calling this. For now let’s just agree to call that object self.”</p>
+
+<p>Every method that is called via an object must have a <code>self</code> parameter. Later on, we’ll look at things called class methods which aren’t called via objects. Those don’t need <code>self</code>.</p>
+
+<h2 id="functionsvsmethods">Functions vs Methods</h2>
+
+<p>The difference between functions and methods is often subtle but extremely important.</p>
+
+<p>A function is independent of any class or object. You call a function like this</p>
+
+<pre><code>function_name_example(example, parameters, go, here)
+</code></pre>
+
+<p>A method is <em>always</em> associated with some class. You call a method like this</p>
+
+<pre><code>object_of_class.method_name(parameters, go, here)
+</code></pre>
+
+<p>What’s the minimum number of parameters for a function? Zero. A function doesn’t <em>have</em> to have any parameters.</p>
+
+<p>What about for a method? One. Remember, <code>self</code> is always necessary for the methods we’ll be dealing with. Without a class you cannot have methods. Period. No exceptions.</p>
+
+</body></html>

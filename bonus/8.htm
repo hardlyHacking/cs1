@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<!-- saved from url=(0027)http://0.0.0.0:8080/bonus/8 -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Bonus8</title>
+<link rel="stylesheet" type="text/css" href="./bonus8_files/style.css">
+</head>
+<body>
+<h1 id="advancedcompoundstatements">Advanced Compound Statements</h1>
+
+<p>Let’s explore some of Python’s more advanced key words and statements!</p>
+
+<h2 id="trycatchfinally">Try / Catch / Finally</h2>
+
+<p>The “Try-Catch” statement exists in many languages and got its primary influence from Java. In Python, it’s called a “Try-Except” statement. It’s used to catch exceptions.</p>
+
+<p>Of course, you’ve seen many examples of exceptions before.</p>
+
+<pre><code>&gt;&gt;&gt; 1 / 0
+ZeroDivisionError: integer division or modulo by zero
+</code></pre>
+
+<p>Here is a perfect example of an exception – a <code>ZeroDivisionError</code> exception. Let’s write a function to catch the exception. When you <strong>catch</strong> an exception, rather than crashing as usual, the program instead follows <em>your</em> code. This way, you can have the program do cool things instead of just exiting suddenly.</p>
+
+<pre><code>function cool_divide():
+    '''
+    Asks the user for inputs and divides them repeatedly.
+    Stops when user enters 'q' as an input.
+    '''
+    user_input = '1;1'
+    while user_input != 'q':
+        user_input = raw_input("Enter two numbers to divide in the format 'a;b': ")
+        if user_input == 'q':
+            break
+        
+        numerator, denominator = user_input.split(';')
+        numerator, denominator = float(numerator), float(denominator)
+        print '%f divided by %f is %f' % (numerator, denominator, numerator / denominator)
+</code></pre>
+
+<p>So far so good; nothing mind-bendingly crazy. Now, we <em>could</em> use if statement to check whether <code>numerator</code> or <code>denominator</code> are <code>0</code> rather than a try-except statement, but this will be more fun, as you’ll soon see.</p>
+
+<p>So how do we add the try-except statement? Like this:</p>
+
+<pre><code>try:
+    print '%f divided by %f is %f' % (numerator, denominator, numerator / denominator)
+except ZeroDivisionError:
+    print 'Cannot divide by zero!'
+</code></pre>
+
+<p>So now, whenever it encounters a <code>ZeroDivisionError</code> exception, rather than quitting like it did above, it will print <code>'Cannot divide by zero!'</code> instead! Of course, you could make it do anything you wanted.</p>
+
+<p>There is actually a <em>third</em> (optional) part to the try-except statement called <code>finally</code>. The code under the <code>finally</code> statement is executed <em>either way</em> – that is, whether there is an exception or not. Let’s use that, too.</p>
+
+<pre><code>try:
+    print '%f divided by %f is %f' % (numerator, denominator, numerator / denominator)
+except ZeroDivisionError:
+    print 'Cannot divide by zero!'
+finally:
+    print "Let's try again with new numbers. Or, enter 'q' if you would like to quit."
+</code></pre>
+
+<p>Now, whether or not there was an exception, the bottom string will be printed. Try statements are far more flexible ways of catching exceptions. As you can imagine, all exceptions stem from one super Exception class, so this way a few except statements can catch all possibilities of errors and react accordingly, rather than using numerous if statements to check for every possibility of something going wrong.</p>
+
+<p>For example, if you wanted to catch <em>every</em> exception ever, you would simply use <code>except Exception:</code> instead of <code>except ZeroDivisionError:</code>.</p>
+
+<h2 id="withstatement">With Statement</h2>
+
+<p>The with statement was introduced in Python 2.5 as a “context manager”. Now that you know try / except / finally statements, you can understand the with statement more concisely. Here are two pieces of code that are equivalent.</p>
+
+<pre><code>def controlled_execution(callback):
+    set things up
+    try:
+        callback(thing)
+    finally:
+        tear things down, or clean up code
+
+def my_function(thing):
+    do something
+
+controlled_execution(my_function)
+</code></pre>
+
+<p>You’ve seen functions being passed as parameters plenty of times, and this is yet another example. Let’s say you had to do some set up and tear down every time before and after your function was called. You could use a try / finally statement to do this.</p>
+
+<p>Unfortunately, that’s a little too verbose for the Python style. So Python lends a hand. Here is the with statement version:</p>
+
+<pre><code>with controlled_execution() as thing:
+    some code
+</code></pre>
+
+<p>Wow! Way better. The <em>classic</em> example of a context manager is using files. Every time you read from a file, you have to open it (before your function) and close it (after your function). Here is the usual way.</p>
+
+<pre><code>f = open('some_file.txt')
+lines = f.readlines()
+f.close()
+</code></pre>
+
+<p>But this can be dangerous; sometimes we forget to close the file, sometimes other things happen. There has to be an easier way!</p>
+
+<pre><code>with open('some_file.txt') as f:
+    lines = f.readlines()
+</code></pre>
+
+<p>That’s it! Pretty useful, huh?</p>
+
+<p>Context managers mean that you should <em>only</em> be using try / except statements to catch exceptions; in all other cases, context managers should be used instead!</p>
+
+</body></html>

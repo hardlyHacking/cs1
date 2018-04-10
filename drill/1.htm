@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<!-- saved from url=(0027)http://0.0.0.0:8080/drill/1 -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Drill1</title>
+<link rel="stylesheet" type="text/css" href="./drill1_files/style.css">
+</head>
+<body>
+<h1 id="types">Types</h1>
+
+<h2 id="typeintroduction">Type Introduction</h2>
+
+<p>Let’s try and do the following operation:</p>
+
+<pre><code>5 + 'Hello There'
+</code></pre>
+
+<p>Any guesses as to the outcome? It won’t work. That’s obvious, right? Python doesn’t know how to add the words “Hello There” with a number, <code>5</code>. And that makes sense – addition is only defined for numbers.</p>
+
+<p>This introduces the basic concept of <strong>types</strong>. There are several kinds of types. Let’s start with the three basic, or <strong>primitive</strong> types.</p>
+
+<ul>
+<li>Integer</li>
+<li>Float</li>
+<li>String</li>
+</ul>
+
+<p>Broadly, this simply defines the difference between numbers and words. “String” is just a fancy computer science term for words, except that strings can include symbols like “!” or “?”. In fact, a string includes basically everything that your keyboard can type.</p>
+
+<p>In many languages, though not Python, there is another type called <strong>character</strong>, which is a single symbol. For example, if “Hello there” is a string, ‘H’ is a character (and so is ‘e’, etc). Although it is not a formal type in Python, it is still quite common to refer to single elements of strings as characters. In fact, it’s so common that the Python function to convert the integer <code>6</code> to the string “6” is called <code>chr</code>, for character.</p>
+
+<p>In short: “a” is a character, while “all” is a string.</p>
+
+<p>Let’s talk about the other two primitive types: Integer and Float. So why do we have two different types to represent numbers? A float includes pretty much every real number, from <code>3.14159</code> to <code>4.8</code> and every other number in existance. Integer types on the other hand, do not include any numbers with decimal points. Examples are <code>-4</code>, <code>0</code>, and <code>4</code>.</p>
+
+<p>So what does Python tell us exactly when we try <code>5 + 'Hello There'</code>?</p>
+
+<pre><code>&gt;&gt;&gt; 5 + 'a'
+Traceback (most recent call last):
+  File "&lt;stdin&gt;", line 1, in &lt;module&gt;
+TypeError: unsupported operand type(s) for +: 'int' and 'str'
+</code></pre>
+
+<p>The last line is the most important. It tells us there is a <code>TypeError</code>, which is what happens when types don’t match up. Specifically, it’s saying that for the operator <code>+</code>, it does not know how to use an <code>int</code> and a <code>str</code> – which is the short way of saying Integer and String. In otherwords, it does not know how to add numbers and strings. Which makes sense.</p>
+
+<h2 id="changingtypes">Changing Types</h2>
+
+<p>In some languages, you are forced to declare the type of every single variable. For example, if you wanted to create an <code>int</code> named <code>a</code>, you would have to do the following:</p>
+
+<pre><code>int a = 5;
+</code></pre>
+
+<p>In these languages, <code>a</code> can only <em>ever</em> be an <code>int</code> and nothing else!</p>
+
+<p>Python, luckily, offers more flexibility for us. We can simply do</p>
+
+<pre><code>a = 5
+</code></pre>
+
+<p>But at a later time, if we want <code>a</code> to be a string instead, we can just as easily do</p>
+
+<pre><code>a = '#WorstClassEver! #JKWeLoveFreshmen'
+</code></pre>
+
+<p>This offers an awesome flexibility, but it puts the onus on you, the programmer, to keep track of what each variable is at each moment in time. Otherwise, you’ll end up adding a string to an integer and run into a problem!</p>
+
+<h2 id="expressions">Expressions</h2>
+
+<p>It’s not just variables that have types. As we saw in the above example, <code>5 + 'Hello There!'</code> has no variables, but we still ran into a signature <code>TypeError</code>! So what gives?</p>
+
+<p>Types are not just limited to variables. Expressions and functions also have types. Python has a builtin <code>type</code> function which tells you the type of anything you give it.</p>
+
+<pre><code>&gt;&gt;&gt; type(5 + 4)
+&lt;type 'int'&gt;
+</code></pre>
+
+<p>Sure enough, the expression <code>5 + 4</code> returns <code>9</code>, which is of type <code>int</code>.</p>
+
+<p>So what <em>is</em> an expression anyways? An expression is <strong>any combination of values, variables, and operators</strong>. This includes any value, even if it’s just by itself with no variables or operators. Even just the slightly rude literal <code>"Puck Frinceton"</code> is an expression.</p>
+
+<p>A statement, on the other hand, is <strong>a section of code that represents a command or action</strong>. Let’s take an example.</p>
+
+<pre><code>truth = "Why do all goth kids who want to non-confrom dress the same?"
+</code></pre>
+
+<p>It’s a simple statement that just assigns the string to the variable <code>truth</code>. Within this statement, the string is an expression, and so is the variable <code>truth</code>. The critical point is that the entire statement as a whole is <em>not</em> an expression; it is a statement, which is composed of two expressions.</p>
+
+<h2 id="booleantype">Boolean Type</h2>
+
+<p>There is actually a surprise fourth primitive type, called <code>boolean</code>. Unlike the other types which have many, many values, this type only has two: <code>True</code> and <code>False</code>. That’s it!</p>
+
+<p>So what are some examples of expressions that have a boolean type?</p>
+
+<pre><code>&gt;&gt;&gt; 5 &gt; 4
+True
+</code></pre>
+
+<p>Miraculous. As it turns out, five is in fact greater than four. <code>:)</code></p>
+
+<p>Let’s try some more tricky ones.</p>
+
+<pre><code>&gt;&gt;&gt; "Dartmouth" &gt; "Cornell"
+True
+</code></pre>
+
+<p>Darn right it is. This is a silly example, but a tricky one. How Python compares strings will be explained later on, so you don’t have to understand this right now.</p>
+
+<p>How about testing whether two things are equal? That’s the <code>==</code> operator.</p>
+
+<pre><code>&gt;&gt;&gt; 5 - 3 == 2
+True
+</code></pre>
+
+<p>That wraps up primitive types… for now. (Yes, there are more surprise types! But that’s for a later time.)</p>
+
+</body></html>
