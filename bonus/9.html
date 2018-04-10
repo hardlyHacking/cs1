@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Bonus9</title>
+<link rel=stylesheet type=text/css href="../static/css/style.css">
+</head>
+<body>
+<h1 id="generatorexpressions">Generator Expressions</h1>
+
+<p>We have a file filled with all the launch code for every missile in the world. As you can imagine, the file is <em>huge</em> &#8211; there are an enormous number of missiles in the world. So we want to go through this and fire a US-owned missile at Russia; this way, the Russians blame the Americans, start World War III, and somehow we end up ahead.</p>
+
+<p>The lines are in this format:</p>
+
+<pre><code>Counter Code of Origin : Country Code of Destination : Secret Code
+</code></pre>
+
+<p>With our current knowledge of Python, we could easily do something like this:</p>
+
+<pre><code>with open('secret_codes.txt', 'r') as f:
+    codes = f.readlines()
+    world_war_3 = [c for c in codes
+            if c.split(':')[0] == 'USA' and c.split(':')[1] == 'RUS']
+    for line in world_war_3:
+        print line.split(':')[-1]
+</code></pre>
+
+<p>Not bad &#8211; it&#8217;s some pretty advanced code there. We have a context manager to open the file, and we use list comprehension to very quickly go through the lines in the file and find the list of codes that we wanted. We then print the codes of the missiles alone so that we can enter them.</p>
+
+<p>But there&#8217;s a problem in our super secret spy plan. The file is <em>huge</em>. Imagine that our computer is a laptop (as spies often use,) and this laptop has 8 GB of information. In reality, it probably has way less. That means that the line <code>codes = f.readlines()</code> forces Python to read the <em>entire</em> file all at once and store the entire thing into the variable <code>codes</code>.</p>
+
+<p>We see the problem now. If the file is larger than 8GB, we&#8217;re out of luck! So what can we do? We obviously don&#8217;t need the <em>entire</em> file all at once. At most we&#8217;re only using <em>one</em> line at a time. So we need to read the file one line at a time. This way we are almost certainly sure to not go over the memory requirement.</p>
+
+<pre><code>with open('secret_codes.txt', 'r') as f:
+    for line in f:
+        origin, dest, code = line.split(':')
+        if origin == 'USA' and dest == 'RUS':
+            print code
+</code></pre>
+
+<p>Wow! That was awesome. How did Python know to automatically iterate through the file in a line by line manner? Enter <code>yield</code>.</p>
+
+<h2 id="yield">Yield</h2>
+
+<figure>
+<img src="http://static.seton.com/media/catalog/product/Yield-Signs-29587-ba.jpg" alt="" />
+<figcaption></figcaption></figure>
+
+<p>An <strong>iterable</strong> is everything you can use the <code>for... in</code> construct on: lists, strings, files, etc are all iterable. It means you can iterate over them.</p>
+
+<p>Yield is much like return, except that the function will return a generator object! An iterator is what allows you to iterate over something; it&#8217;s what defines <em>how</em> you iterate over something, and when you stop. A generator is a type of iterator.</p>
+
+<pre><code>def squares(n):
+    for i in xrange(n):
+        yield i * i
+
+for i in squares(10):
+    print i
+</code></pre>
+
+<p>As you expect, the output is</p>
+
+<pre><code>0
+1
+4
+9
+16
+25
+36
+49
+64
+81
+</code></pre>
+
+<p><a href="http://stackoverflow.com/questions/231767/the-python-yield-keyword-explained">Here</a> is an <em>excellent</em> resource to explain the yield statement if you are still confused.</p>
+
+<p>As explained in the link posted above, &#8220;To master yield, you must understand that when you call the function, the code you have written in the function body does not run. The function only returns the generator object, this is a bit tricky <code>:-)</code>. Then, your code will be run each time the for uses the generator.&#8221;</p>
+
+<p>&#8220;The first time the for calls the generator object created from your function, it will run the code in your function from the beginning until it hits yield, then it&#8217;ll return the first value of the loop. Then, each other call will run the loop you have written in the function one more time, and return the next value, until there is no value to return.&#8221;</p>
+
+<p>When does it stop? A generator is empty once the function does not hit yield anymore; i.e. once the function exits, the generator is considered empty.</p>
+
+<h2 id="generatorexpressions">Generator Expressions</h2>
+
+<p>Generator Expressions are nothing more than systematic ways to utilize yield statements. The principle benefit, once again, is to minimize memory usage. If you don&#8217;t need everything all at once, you should use a generator expression rather than list comprehension.</p>
+
+<p>So when would you have to use list comprehension? If you need to concatenate the output with a list, you need to use list comprehension. If you need to index into the result, you need list comprehension.</p>
+
+<p>But in most other cases, you can suffice with generator expressions.</p>
+
+<p><strong>Generators are iterators, but you can only iterate over them once. It&#8217;s because they do not store all the values in memory, they generate the values on the fly.</strong></p>
+
+<p>Syntax-wise, it&#8217;s exactly like list comprehensions but with parens around instead of brackets (<code>( )</code> instead of <code>[ ]</code>).</p>
+
+<p>Here&#8217;s a great example. Write a function where the parameter is one integer, and you return the sum of the squares from one up to that integer. So if I call <code>sum_squares(3)</code> you calculate <code>1 * 1 + 2 * 2 + 3 * 3</code> and return <code>14</code>.</p>
+
+<p>Like many things in Python, this can be done in a single line.</p>
+
+<pre><code>def sum_squares(n):
+    return sum([x*x for x in range(n)])
+</code></pre>
+
+<p>But do we really need the <em>entire</em> list all at once? Of course not. So let&#8217;s swap out the list comprehension for a generator expression.</p>
+
+<pre><code>def sum_squares(n):
+    return sum((x*x for x in range(n)))
+</code></pre>
+
+<p>That&#8217;s kind of ugly &#8211; the first set of parens is due to <code>sum</code>, and the second set is due to the generator expression. Because of this ugliness, Python allows generator expressions inside function calls to be without parens. So it can actually just look like this:</p>
+
+<pre><code>def sum_squares(n):
+    return sum(x*x for x in range(n))
+</code></pre>
+
+<p>Pretty cool! As you look over the places where you use list comprehension, you&#8217;ll start to realize how often generator expressions could have been used instead!</p>
+
+<p>Here&#8217;s another example. We have a file with many lines; find the length of the longest line in the file.</p>
+
+<pre><code>with open(filename, 'r') as file:
+    print max(len(line) for line in file)
+</code></pre>
+
+<h2 id="othercomprehensions">Other Comprehensions</h2>
+
+<p>There are actually two <em>more</em> types of comprehensions in Python: set comprehension and dictionary comprehension.</p>
+
+<p>Set comprehensions create sets, and dictionary comprehensions create dictionaries.</p>
+
+<p>Since these are only available in Python 3.0+, and this was advertised as a Python 2.7 course, we won&#8217;t be discussing them. Feel free to look them up if you&#8217;re curious &#8211; the syntax is pretty much exactly the same as the other comprehensions, only they use braces (<code>{ }</code>) instead of parens or brackets.</p>
+
+<h2 id="furtherresources">Further Resources</h2>
+
+<p>David Beazely is my personal Python God, and he has much wisdom to share with you. He is a master of coroutines, subroutines, parallelism in Python, and many many other things.</p>
+
+<p><a href="http://www.dabeaz.com/generators/">Here</a> is his first lecture on generators - there are many more, and he is a repeat speaker at PyCon. Seriously, learn his stuff. He is incredible.</p>
+</body>
+</html>

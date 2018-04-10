@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Bonus7</title>
+<link rel=stylesheet type=text/css href="../static/css/style.css">
+</head>
+<body>
+<h1 id="tailrecursion">Tail Recursion</h1>
+
+<h2 id="whatisit">What Is It?</h2>
+
+<p>Recursion seems pretty useless, right? I mean <em>come on</em> &#8211; even if you do everything right (have a base case, make the problem smaller, etc etc) you can only recurse at most roughly 1000 times.</p>
+
+<p>What the <em>heck</em>?</p>
+
+<p>All of you should be asking &#8211; well, if that&#8217;s the case then screw it &#8211; I&#8217;ll just use the iterative approach!</p>
+
+<p>As it turns out this is not an inherent limitation with recursion, but rather with how <em>Python has decided to implement recursion</em>.</p>
+
+<p>Enter <strong>tail recursion</strong>. As you know, the reason recursion is limited is because every new stack frame takes up memory, and computers have a limited amount of memory allocated for the stack.</p>
+
+<p>But what if you could <em>reuse</em> the same stack frame? Imagine your pseudocode went something like this:</p>
+
+<pre><code>def recursive_function(some_param):
+    do something with the parameters
+
+    do more calculations
+
+    finish up all calculations
+
+    recursive_function(some_new_param)
+</code></pre>
+
+<p>The critical thing here is that <em>all calculations that use the current stack frame are done before you recurse</em>. If this is the case, then we don&#8217;t <em>really</em> need a <em>new</em> stack frame, right? We&#8217;re done using everything we need to in this current stack frame before calling the recursive function, which means that rather than create a new stack frame, we should actually be able to use the same one&#8230; Right?</p>
+
+<p>This is known as tail recursion because the recursive call occurs at the <em>tail end</em> of the function. Sometimes it is also called as tail call optimization. Many languages allow for this to happen by default. Java, and many functional languages like Haskell and Scala. But why not Python?</p>
+
+<p>The person who invented Python is Guido van Rossum, and he is Python&#8217;s BDFL: Benevolent Dictator For Life. He has chosen, <a href="http://neopythonic.blogspot.com/2009/04/final-words-on-tail-calls.html">for many reasons</a>, to <a href="http://neopythonic.blogspot.com/2009/04/tail-recursion-elimination.html">not include TCO</a> (tail call optimization) in Python. Though many disagree with him, that&#8217;s just how life is.</p>
+
+<p>But that doesn&#8217;t mean we can&#8217;t do it ourselves. It just means we have to work a little harder.</p>
+
+<h2 id="atrampolineapproach">A Trampoline Approach</h2>
+
+<p>This section assumes you&#8217;ve read everything about decorators from the last week&#8217;s bonus section. If you haven&#8217;t, none of this will make sense to you!</p>
+
+<p>Let&#8217;s start with a simple program &#8211; factorial.</p>
+
+<pre><code>def fact(n, r=1):
+    if n &lt;= 1:
+        return r
+    else:
+        return fact(n-1, n*r)
+</code></pre>
+
+<p>It&#8217;s fairly simple, and sure enough, <code>fact(999)</code> runs whereas <code>fact(1000)</code> produces a <code>RuntimeError: Maximum recursion depth exceeded</code>. So let&#8217;s make it tail recursive!</p>
+
+<p>Let&#8217;s create a TailCall class that demonstrates an example.</p>
+
+<pre><code>class TailCall(object) :
+    def __init__(self, call, *args, **kwargs) :
+        self.call = call
+        self.args = args
+        self.kwargs = kwargs
+
+    def handle(self) :
+        return self.call(*self.args, **self.kwargs)
+</code></pre>
+
+<p>We&#8217;re not quite done yet. Next, we create a function which wraps a trampoline around any function. This is quite similar to how this worked in the decorators lecture, and it is called <strong>trampolining</strong>.</p>
+
+<pre><code>def t(f):
+    def _f(*args, *kkwargs):
+        ret = f(*args, **kwargs)
+        while type(ret) is TailCall:
+            ret = ret.handle()
+        return ret
+    return _f
+</code></pre>
+
+<p>Then, we can change our factorial function <code>fact</code> to do this instead.</p>
+
+<pre><code>def fact(n, r=1):
+    if n &lt;= 1:
+        return r
+    else:
+        return TailCall(fact, n-1, n*r)
+</code></pre>
+
+<p>What&#8217;s going on here? Well, instead of <code>fact(n)</code>, we are actually calling <code>t(fact)(n)</code>! Wow. With this, we are reusing the stack frame so we can do <code>fact</code> of any arbitrary number (provided you wait long enough).</p>
+
+<p>This is simply a rough example of how to make this occur. You can in fact <a href="https://gist.github.com/ionelmc/1fa3460abf7cbb397c2e">optimize</a> this even more!</p>
+
+<p>And now, you have a non-useless version of recursion! <code>:)</code></p>
+
+<h2 id="tcowithdecorators">TCO with Decorators</h2>
+
+<p>One might be tempted to use the function <code>t</code> that we defined above as the decorator without any changes. Try it out! Does it give you a better performance?</p>
+
+<pre><code>@t
+def fact(n, r=1):
+    if n &lt;=1:
+        return r
+    else:
+        return TailCall(fact, n-1, n*r)
+</code></pre>
+
+<p>On most machines, this will give you even worse than the regular, no tail-call recursion. So how do we make this better? That&#8217;s quite tricky, but if you are really curious, I highly recommend reading up on the credits section where I&#8217;ve linked you to other resources that give better solutions. (Protip: It certainly <em>is</em> possible to use decorators and achieve the same solution &#8211; in fact, it&#8217;s actually preferrable.)</p>
+
+<h2 id="credits">Credits</h2>
+
+<p>As far as I know, <a href="http://kylem.net/programming/tailcall.html">Kyle Miller</a> was one of the first to do this &#8211; and certainly the first I had heard of personally &#8211; and most of this comes from his website.</p>
+
+<p>Here is Paul Butler&#8217;s <a href="http://paulbutler.org/archives/tail-recursion-in-python/">explanation</a> which is also helpful.</p>
+</body>
+</html>

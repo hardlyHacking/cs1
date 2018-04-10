@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Recitation4</title>
+<link rel=stylesheet type=text/css href="../static/css/style.css">
+</head>
+<body>
+<h1 id="recitation4:examreview">Recitation 4: Exam Review</h1>
+
+<h2 id="scope">Scope</h2>
+
+<p>You should be comfortable with Python scope. Learn the LEGB rule well.</p>
+
+<ul>
+<li>L - Local</li>
+<li>E - Enclosing</li>
+<li>G - Global</li>
+<li>B - Builtin</li>
+</ul>
+
+<p>Some of you may have been wondering what the <code>E</code> stands for, considering the <code>L</code> is already delimited by the local function definition.</p>
+
+<p>For now, we won&#8217;t quiz you on the <code>E</code>. For that, we&#8217;ll need to talk about functions within functions and strange things like Objects and Classes. Ignore it for now.</p>
+
+<p>Given a code example like this, you should be comfortable in explaining why it fails.</p>
+
+<pre><code>def meaning_of_life():
+    meaning = 42
+
+print meaning
+</code></pre>
+
+<p>That&#8217;s an obvious one. How about a more challenging one involving global variables?</p>
+
+<pre><code>life = 42
+
+def hitchHikersGuide():
+    print life
+    life = 0
+
+hitchHikersGuide()
+print life
+</code></pre>
+
+<p>This is a tricky one, and it requires you to be very comfortable with how Python evaluates local and global values. Let&#8217;s start simple. Will the code run without an error?</p>
+
+<p>No, it won&#8217;t. In fact, here is the error it will throw.</p>
+
+<pre><code>UnboundLocalError: local variable 'meaning' referenced before assignment
+</code></pre>
+
+<p>An <code>UnboundLocalError</code>. Interesting &#8211; probably something many of you haven&#8217;t seen except once on the lab before running to the help of a section leader. It means you&#8217;re trying to access a local variable before defining it. Here&#8217;s another example of the <code>UnbounbLocalError</code>:</p>
+
+<pre><code>def hey():
+    print dude
+    dude = 7
+</code></pre>
+
+<p>Python sees that <code>dude</code> <em>is</em> defined, it&#8217;s just defined <em>after</em> you&#8217;re trying to use it in the <code>print</code> statement. Same thing is happening with <code>meaning</code>. But wait a minute! Isn&#8217;t <code>meaning</code> a global variable?</p>
+
+<p>No, it&#8217;s not. The problem here is we&#8217;ve defined a local variable and a global variable <em>with the same name</em>! Python sees that within the function <code>hitchHikersGuide</code>, we&#8217;re actually defining a variable called <code>life</code>. So it assumes when we try and print it, we mean the <em>local</em> one.</p>
+
+<p>Note that it <em>doesn&#8217;t</em> try and access the local one, and upon failing, try and see if it works with the global one. Computers aren&#8217;t that smart. It tries to get the local variable, fails, and then cries.</p>
+
+<p>Fundamentally, naming a local and global variable with the same name means that within the local variable&#8217;s scope, you <em>cannot</em> access the global variable! This is referred to as &#8220;stomping&#8221; on the global variable.</p>
+
+<p>How about that confusing word <code>global</code>. Be familiar with it. You should know how to use it and when it&#8217;s needed. Since you had an entire lab on this point, I won&#8217;t make another exercise involving it here.</p>
+
+<h2 id="loops">Loops</h2>
+
+<p>You should be very proficient with loops. While loops and for loops &#8211; the differences, and their limitations.</p>
+
+<p><strong>While Loops</strong></p>
+
+<p>How many times does the following code print output?</p>
+
+<pre><code>i = 0
+while i &lt;= 10:
+    print &quot;Hello!&quot;
+    i += 1
+</code></pre>
+
+<p>Eleven. Computer scientists start counting from zero. Okay, that was fairly easy. What about <em>this</em> one? (Same question.)</p>
+
+<pre><code>i = 0
+while i &lt;= 10:
+    j = 0
+    while j &lt;= 10:
+        print &quot;Hey!&quot;
+        j += 1
+    i += 1
+</code></pre>
+
+<p>Top loop executes eleven times, and for every time the top loop executes, the inner loop executes eleven times. Simple enough: <code>11 x 11 = 121</code>.</p>
+
+<p><strong>For Loops</strong></p>
+
+<p>You should be familiar with the various types of for loop headers and why we use each type. In addition, you should be reasonably familiar with lists and the common operations associated with them.</p>
+
+<p>What is the output? What does the following code do to each of the lists?</p>
+
+<pre><code>joke = [&quot;Do&quot;, &quot;you&quot;, &quot;like&quot;, &quot;impressions?&quot;]
+response = [&quot;Yeah!&quot;]
+punch = [&quot;Why?&quot;, &quot;Pause&quot;, &quot;That&quot;, &quot;was&quot;, &quot;Socrates&quot;]
+
+for word in joke + response + punch:
+    print word
+    word = &quot;Not funny&quot;
+</code></pre>
+
+<p>The output is simple enough. It prints every word contained in the three lists, one word per line. As for the second question, the answer is <em>nothing</em>. It does <em>nothing</em> to the lists. If you&#8217;re not clear why, look up the for loop lecture.</p>
+
+<p>What&#8217;s the point of this code?</p>
+
+<pre><code>youCantGuess = []
+words = [&quot;dude&quot;, &quot;avacado&quot;, &quot;dudett&quot;, &quot;broccoli&quot;, &quot;not a food&quot;, &quot;totally food&quot;]
+for i in range(len(words)):
+    if i % 2 == 0:
+        youCantGuess.append(words[i])
+</code></pre>
+
+<p>It adds all the even-indexed elements in <code>words</code> to the list <code>youCantGuess</code>.</p>
+
+<p>Great! What about splice notation?</p>
+
+<pre><code>crazyList = [2, 3, 5, 7, 11, 13, 17, 19, 23]
+notSoCrazy = [1, 4, 6, 8, 9, 10, 12, 14, 15]
+for i in (crazyList[::-1] + notSoCrazy)[:6:-2]:
+    print i
+</code></pre>
+
+<p>Woah. Some pretty intentionally obfuscatory code, eh? Let&#8217;s step through this, slowly.</p>
+
+<p>You&#8217;ve seen the classic <code>[::-1]</code> before &#8211; nothing new there. It reverses a list. So we add the reversed <code>crazyList</code> to the regular <code>notSoCrazy</code>. That result isn&#8217;t so bad:</p>
+
+<pre><code>[23, 19, 17, 13, 11, 7, 5, 3, 2, 1, 4, 6, 8, 9, 10, 12, 14, 15]
+</code></pre>
+
+<p>Okay. What does the next part do? There&#8217;s no starting position &#8211; so that means it defaults to one of the two ends of the list. The ending position is <code>6</code>, which means that the element at index <code>6</code> is the first element that <em>won&#8217;t</em> be included. Lastly, the step is <code>-2</code>, which means we&#8217;re going to start at the <em>right</em> end of the list and go left until we hit the element with index <code>6</code>. However, since the step is <code>-2</code>, we&#8217;ll ignore every other element.</p>
+
+<pre><code>0    1   2   3   4   5   6   7   8  9 10 11 12  13  14  15  16
+[23, 19, 17, 13, 11, 7, 5, 3, 2, 1, 4, 6, 8, 9, 10, 12, 14, 15]
+</code></pre>
+
+<p>On the top we see the indices, and on the bottom we see the actual list. So let&#8217;s take the elements, starting from the right end, and going until (but not including!) index <code>6</code>, ignoring every other one.</p>
+
+<p>So we take <code>15</code>, ignore <code>14</code>. Take <code>12</code>, ignore <code>10</code>. You see how this goes. Here&#8217;s the final result!</p>
+
+<pre><code>[15, 12, 9, 6, 1, 3]
+</code></pre>
+
+<p>Of course, we don&#8217;t expect you to look at this for ten seconds and solve it. But we <em>do</em> expect that, given a pencil and a piece of paper, you could work through this over the course of several minutes. Annoying? Perhaps. But it shows a very thorough understanding of the material.</p>
+
+<h2 id="debugging">Debugging</h2>
+
+<p>You should be comfortable stepping through the code. We&#8217;ll give you a snippet of code, and if it runs you should explain what the output is. If you think it won&#8217;t run, you should explain what you think the error will be.</p>
+
+<p>Want practice? Why not.</p>
+
+<p>Exercise 0:</p>
+
+<pre><code>stuff = [5] * 3
+print stuff
+</code></pre>
+
+<p>Answer:</p>
+
+<pre><code>[5, 5, 5]
+</code></pre>
+
+<p>Wow! Pretty cool way to create a quick list, huh? How about another one.</p>
+
+<p>Exercise 1:</p>
+
+<pre><code>def nyanCat():
+    global meow, woof
+    print &quot;meow!&quot;
+    while meow &gt; woof:
+        print &quot;meow!&quot;
+
+def doge()
+    global meow, woof
+    print &quot;woof!&quot;
+    while woof &gt; meow:
+        print &quot;woof!&quot;
+
+meow, woof = 3, 4
+nyanCat()
+doge()
+</code></pre>
+
+<p>This one is slightly tricky, because it has output, but it also has a major bug. Here is the output.</p>
+
+<pre><code>meow!
+</code></pre>
+
+<p>However, there is also an infinite loop! <code>meow</code> and <code>woof</code> are never decremented, so <code>doge</code> function goes on forever!</p>
+
+<p>Exercise 2:</p>
+
+<pre><code>for char in 'Oh my god!':
+    print char
+</code></pre>
+
+<p>Answer:</p>
+
+<p>You can iterate through strings one character at a time.</p>
+
+<pre><code>O
+h
+
+m
+y
+
+g
+o
+d
+!
+</code></pre>
+</body>
+</html>

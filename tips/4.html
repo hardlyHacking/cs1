@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Recitation3</title>
+<link rel=stylesheet type=text/css href="../static/css/style.css">
+</head>
+<body>
+<h1 id="recitation3:lists">Recitation 3: Lists</h1>
+
+<p>Lists! Lists are everywhere. Pretty much every program you’ll write will involve a list in some fashion, so it’s important to be able to use them competently.</p>
+
+<h2 id="lists">Lists</h2>
+
+<p>So what’s a list? It’s not that different from lists outside of computer science. It’s just a collection of things. These can be anything. For example, here is an organized list.</p>
+
+<pre><code>[1, 2, 3, 4, 5]
+</code></pre>
+
+<p>Pretty organized. But this disorganized lump of stuff is also a list!</p>
+
+<pre><code>[True, 0, 3.62, &quot;Obama&quot;]
+</code></pre>
+
+<p>The types don’t even match! But Python doesn’t care. Anything can be in a list. What about… other lists? Yup, that works, too!</p>
+
+<pre><code>[False, -8, 2.128, []]
+</code></pre>
+
+<p>This particular list has an empty list inside of it! An empty list is denoted with <code>[]</code> <em>not</em> <code>( )</code>.</p>
+
+<p>Imagine you want to access the <strong>zeroeth</strong> element in a list (remember, computer scientists count from <code>0</code>, not <code>1</code>). How would we do this? From the notes, you’d probably say, if the list name was <code>popStars</code>, you&#8217;d say <code>popStars[0]</code>.</p>
+
+<p>We call this <strong>indexing into a list.</strong></p>
+
+<p>What happens if we try this:</p>
+
+<pre><code>a = [1, 2, 3, 4, 5]
+print a[5]
+</code></pre>
+
+<p>As we said above, lists are indexed starting at index <code>0</code>. Which means that the list <code>a</code> has indices <code>0</code> through <code>4</code>. We get the following error.</p>
+
+<pre><code>Traceback (most recent call last):
+  File &quot;&lt;stdin&gt;&quot;, line 1, in &lt;module&gt;
+IndexError: list index out of range
+</code></pre>
+
+<p>Again, the last line is the important thing here. An <code>IndexError</code> is Python’s way of telling you that you’re accessing an element that doesn’t exist.</p>
+
+<p>But what about types!? Remember that <code>type</code> function?(I <em>told</em> you I’d ask you about types everyday!) Let’s see what Python says.</p>
+
+<pre><code>&gt;&gt;&gt;type([1, 2, 3])
+&lt;type 'list'&gt;
+</code></pre>
+
+<p>Ah-ha! A new type called <code>list</code>. The type <code>list</code> is <em>not</em> a primary type. (Remember, primary types only include <code>int</code>, <code>str</code>, <code>float</code> and <code>bool</code>.) This new type is a complex type. As you can imagine, functions can also return lists.</p>
+
+<p>With lists come a new operator <code>in</code>. You’ve seen <code>in</code> in for loops, but with lists they can be used differently: to test if something is “in” a list.</p>
+
+<pre><code>badOlympicThings = [&quot;Invade Crimea&quot;, &quot;Start World War 3&quot;,
+    &quot;Not have all the Olympic Rings Work&quot;,
+    &quot;Kill the engineer who made the olympic rings not work&quot;]
+
+if &quot;Invade Crimea&quot; in badOlympicThings:
+    print &quot;Oh, this is probably a bad idea. Guess I shouldn't do that.&quot;
+
+print &quot;Lol JK, I'm Putin and I do what I want.&quot;
+</code></pre>
+
+<p>The above code will execute both print statements.</p>
+
+<h2 id="splicenotation">Splice Notation</h2>
+
+<p>In Python, there are actually <em>two</em> ways to index into a list! Let’s visualize it with this handy diagram.</p>
+
+<pre><code> +---+---+---+---+---+
+ | H | e | l | p | A |
+ +---+---+---+---+---+
+ 0   1   2   3   4   5
+-5  -4  -3  -2  -1
+</code></pre>
+
+<p>So with negative numbers, you can start indexing from the right side instead of the left side! This way you don’t actually have to know the length of the list. Imagine you wanted to get the right-most element in a list. Without negative indexing, you’d have to do something annoying like this.</p>
+
+<pre><code>def getLastElement(someList):
+    return someList[len(someList) - 1
+</code></pre>
+
+<p>So why do we subtract by one? Remember, (I’ll keep saying it until it’s stuck in everyone’s heads,) <em>computer scientists start counting from zero</em>. This means that if a list has <code>3</code> elements (that’s the length of the list), the indices are <code>0</code>, <code>1</code>, and <code>2</code>. That means the index of the last element is the length minus one.</p>
+
+<p>But that’s annoying. Why can’t we just do</p>
+
+<pre><code>return someList[-1]
+</code></pre>
+
+<p>We can. Yay Python!</p>
+
+<p>But with this new notion of awesome negative indexing, we have what’s called <strong>splice notation</strong>. Splice notation is a fast way to make sublists given an original list.</p>
+
+<p>My friends know I <em>love</em> spoilers. spoilers. Reading the entire Harry Potter series just seems like so much work! Why when I can just have spoilers that save me all that work. So here’s an example of the giant list of spoilers my friends have compiled for me.</p>
+
+<pre><code>harry_potter_spoilers = [&quot;Sirius Black is innocent and Harry's godfather&quot;,
+    &quot;Peter Pettigrew is the traitor&quot;, &quot;Dumbledore dies&quot;,
+    &quot;Harry is the last Horcrux&quot;]
+</code></pre>
+
+<p>But I’m <em>so</em> lazy that I don’t even want to read through this list of spoilers in order. I want to read it backwards! After all, the most important spoilers must be at the end, right? So let’s do that.</p>
+
+<pre><code>for spoiler in harry_potter_spoilers[::-1]:
+    print spoiler
+</code></pre>
+
+<p>What!? No list reversal? Nope. Splice notation, with just a few extra characters, handles all of that for us! So let’s see how this works.</p>
+
+<pre><code>list[start:end] # items start through end-1
+list[start:]    # items start through the rest of the array
+list[:end]      # items from the beginning through end-1
+list[:]         # a copy of the whole array
+list[start:end:step] # start through not past end, by step
+</code></pre>
+
+<p>The point that most beginners find confusing is that <code>end</code> represents the index of the first element <em><strong>not</strong></em> included. This is just like range. <code>range(4)</code> includes everything but up to but <em>not</em> including <code>4</code>.</p>
+
+<p>Here are some further examples of splice notation.</p>
+
+<pre><code>list[-1]    # last item in the array
+list[-2:]   # last two items in the array
+list[:-2]   # everything except the last two items
+</code></pre>
+
+<p>So how does the example I gave above work? Remember that if the start and end values are left empty, splice notation defaults to the start and end of the list. That’s why <code>list[:]</code> copies the entire list. However, we’ve added a third parameter, the step of <code>-1</code>. Thus, it copies the entire list, but steps through it backwards. In essence, this reverses the list, which is what we wanted!</p>
+
+<p>Remember, this creates copies of lists. So if you want to change the actual elements within a list, you’ll have to use the for loop that uses <code>range</code>: <code>for &lt;var&gt; in range(len(&lt;list name&gt;)):</code>.</p>
+
+<h2 id="reference">Reference</h2>
+
+<p>Here are some common list functions that you may find useful. You’re not expected to memorize them, but be familiar enough that if presented on an exam you’ll know what they do.</p>
+
+<p><strong>Common List Functions</strong></p>
+
+<p><code>max</code> finds the largest element in a list.</p>
+
+<pre><code>&gt;&gt;&gt; a = [1, 2, 3, 4]
+&gt;&gt;&gt; max(a)
+4
+</code></pre>
+
+<p><code>min</code> finds the smallest.</p>
+
+<pre><code>&gt;&gt;&gt; a = [1, 2, 3, 4]
+&gt;&gt;&gt; min(a)
+1
+</code></pre>
+
+<p><code>len</code>, which you’ve already seen, gives the length of a list.</p>
+
+<pre><code>&gt;&gt;&gt; a = [1, 2, 3, 4]
+&gt;&gt;&gt; len(a)
+4
+</code></pre>
+
+<p><strong>Common List Methods</strong></p>
+
+<p>This begs the question of what’s the difference between a method and a function. We’ll get to that in two weeks. For now, here is the difference.</p>
+
+<p>A function that uses <code>a</code>:</p>
+
+<pre><code>function(a)
+</code></pre>
+
+<p>A method of <code>a</code>:</p>
+
+<pre><code>a.function()
+</code></pre>
+
+<p>So all of these that I’m about to show you are <em>methods</em>, which means the format is <code>listName.methodName()</code>.</p>
+
+<p><code>append</code> adds something to the end of a list.</p>
+
+<pre><code>&gt;&gt;&gt; a = [1, 2, 3, 4]
+&gt;&gt;&gt; a.append(5)
+&gt;&gt;&gt; print a
+[1, 2, 3, 4, 5]
+</code></pre>
+
+<p><code>count</code> takes a parameter and counts how many times that parameter appears in the list.</p>
+
+<pre><code>&gt;&gt;&gt; a = [1, 2, 1, 3]
+&gt;&gt;&gt; a.count(2)
+2
+</code></pre>
+
+<p><code>reverse</code> makes the list backwards.</p>
+
+<pre><code>&gt;&gt;&gt; a = [1, 2, 3, 4]
+&gt;&gt;&gt; a.reverse()
+&gt;&gt;&gt; print a
+[4, 3, 2, 1]
+</code></pre>
+</body>
+</html>

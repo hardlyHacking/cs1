@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Drill4</title>
+<link rel=stylesheet type=text/css href="../static/css/style.css">
+</head>
+<body>
+<h1 id="primitivevscomplextypes">Primitive vs Complex Types</h1>
+
+<p>You&#8217;ve heard me talk all quarter about types and how important they are, and I&#8217;ve kept promising how we&#8217;ll talk about the differences between primitive and non-primitive types &#8220;later&#8221;. Well, at long last, &#8220;later&#8221; is now.</p>
+
+<p>As a brief review, what are the &#8220;primitive&#8221; types?</p>
+
+<ul>
+<li>Boolean</li>
+<li>String</li>
+<li>Integer</li>
+<li>Floating point</li>
+<li>NoneType</li>
+</ul>
+
+<p>What are the non-primitive types? So far, we&#8217;ve only seen two.</p>
+
+<ul>
+<li>List</li>
+<li>Function</li>
+</ul>
+
+<p>So let&#8217;s start this experiment with a puzzle. Guess the output of the code.</p>
+
+<pre><code>def amurrica(some_parameter):
+    some_parameter = 5
+
+def canada(some_nice_parameter):
+    some_nice_parameter = 3
+
+a = 7
+print a
+amurrica(a)
+print a
+canada(a)
+print a
+</code></pre>
+
+<p>So what is the output of this? If you guessed</p>
+
+<pre><code>7
+7
+7
+</code></pre>
+
+<p>You&#8217;d be right! So what gives? Obviously, functions <code>amurrica</code> and <code>canada</code> are <em>trying</em> to change <code>a</code>, but why don&#8217;t they? This goes back to how parameters work in functions.</p>
+
+<p>Parameters are copied, left to right, from the <strong>actual parameter</strong> to the <strong>formal parameter</strong>; this is called <strong>call by value</strong>. Wow, that&#8217;s a lot of terminology, so let&#8217;s break that down.</p>
+
+<p>What&#8217;s an actual parameter? An actual parameter is the value being put inside the parentheses when the function is being <em>called</em>. So in this code, <code>a</code> is the actual parameter.</p>
+
+<p>The formal parameter, on the other hand, is what is inside the <code>def</code> statement. It&#8217;s what the function calls whatever is being passed to it. So for the function <code>amurrica</code>, <code>some_parameter</code> is the formal parameter. Naturally, <code>some_parameter</code>&#8217;s scope is limited to inside of the function <code>amurrica</code>.</p>
+
+<p>So call by value <em>copies</em> the value from the actual parameter to the formal one. Which means that <code>some_parameter</code> is a completely <em>different</em> variable that has a <em>copy</em> of whatever value <code>a</code> has. So when <code>amurrica</code> and <code>canada</code> try and change the formal parameters, they&#8217;re not changing <code>a</code>; they&#8217;re just changing the some copy of <code>a</code>.</p>
+
+<p>Make sense? <em>That&#8217;s</em> call by value.</p>
+
+<p>Now let&#8217;s take a look at this code instead.</p>
+
+<pre><code>def amurrica(some_parameter):
+    some_parameter.append(&quot;EVERYTHING CUZ USA BE AWESOME, SON&quot;)
+
+def canada(some_parameter):
+    some_parameter.append(&quot;We have awesome Hockey, and stuff&quot;)
+
+freedom = []
+print freedom
+amurrica(freedom)
+print freedom
+freedom = []
+canada(freedom)
+print freedom
+</code></pre>
+
+<p>Now what&#8217;s the output? You guessed it.</p>
+
+<pre><code>[]
+[&quot;EVERYTHING CUZ USA BE AWESOME, SON&quot;]
+[&quot;We have awesome Hockey, and stuff&quot;]
+</code></pre>
+
+<p>What!? This time the parameter changed? Before you drown your computer in a lake for fear of witchcraft, let&#8217;s look at the <em>types</em> of the parameters being passed. As you see, the first time we passed a primitive type. This time, we&#8217;re passing a non-primitive type. So what happens when you pass a parameter that&#8217;s non-primitive?</p>
+
+<p>Here, a <strong>reference</strong> for the actual parameter is given to the formal parameter. What&#8217;s a reference? A reference is the location in your computer&#8217;s memory where the actual variable exists. This is called <strong>call by reference</strong>.</p>
+
+<p>In this case, <code>some_parameter</code> holds the actual address of <code>freedom</code>; so when <code>some_parameter</code> makes changes, it makes changes to <code>freedom</code>.</p>
+
+<p>Here&#8217;s the essence of the difference between primitive and complex types: primitive types are call by value, while complex types are call by reference.</p>
+
+<p>But what if we wanted to change the value of a primitive type? Why not pack it in a list? Next week we&#8217;ll talk about a better way to do this, but for now this is a good enough.</p>
+</body>
+</html>

@@ -1,0 +1,51 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta name="generator" content="pandoc" />
+  <title></title>
+</head>
+<body>
+<!-- <script type="text/javascript" -->
+<!--   src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"> -->
+<!-- </script> -->
+
+<script type="text/javascript"
+  src="https://c328740.ssl.cf1.rackcdn.com/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+});
+</script>
+
+<link rel="stylesheet" href="http://www.cs.dartmouth.edu/~cs1/azul.css" type="text/css" />
+
+
+<div id = "menubar">
+<ul>
+<li><a href="http://www.cs.dartmouth.edu/~cs1/syllabus.html">Syllabus</a>
+<li><a href="http://www.cs.dartmouth.edu/~cs1/schedule.html">Schedule</a>
+<li><a href="http://www.cs.dartmouth.edu/~cs1/shortassign/short_assignments.html">Short assignments</a>
+<li><a href="http://www.cs.dartmouth.edu/~cs1/labs/lab_assignments.html">Labs</a>
+<li><a href="http://www.cs.dartmouth.edu/~cs1/exams.html">Exams</a>
+<li><a href="http://www.cs.dartmouth.edu/~cs1/software.html">Course software</a>
+</ul>
+</div>
+
+<div id = "termtitle"> CS 1: Spring 2014 </div> 
+<h1>Short Assignment #9: Backward Scans <br />Due: Wednesday, May 22</h1>
+<p>This short assignment is very short.</p>
+<p>As we saw in lecture, in order to perform a segmented reduction, we need to perform a backward, segmented copy-scan. Describe how to do so. Your description may be in prose, rather than code, but you should include an illustrative example. Of course, the parallel running time should be <span class="math"><em>O</em>(log <em>n</em>)</span>, assuming that <span class="math"><em>n</em> ≤ <em>p</em></span>.</p>
+<p>Here's an example of what a backward copy-scan should do:</p>
+<pre><code>index       0   1   2   3   4   5   6   7   8
+
+seg         1   0   0   1   0   0   0   1   0
+x           5   7   8   3   9   4   5   2   6
+
+result      8   8   8   5   5   5   5   6   6
+</code></pre>
+<p>You may submit a plain text file, a Word file, or a PDF.</p>
+</body>
+</html>

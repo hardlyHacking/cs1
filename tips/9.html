@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Tips9</title>
+<link rel=stylesheet type=text/css href="../static/css/style.css">
+</head>
+<body>
+<h1 id="circuitdesign">Circuit Design</h1>
+
+<p>Using the types of logic gates we discussed, we can start building simple circuits and mimic what actual computers do.</p>
+
+<p>First, though, we need to know how to represent these gates.</p>
+
+<figure>
+<img src="http://www.ee.surrey.ac.uk/Projects/CAL/digital-logic/gatesfunc/graphics/symtab.gif" alt="" />
+<figcaption></figcaption></figure>
+
+<p>Here are all of the gates we discussed. Notice that exclusive or is labeled EOR instead of XOR, and XNOR is labeled ENOR instead; either way is fine &#8211; the critical portion is the way the gate is drawn.</p>
+
+<p>Couple guidelines when drawing gates:</p>
+
+<ul>
+<li><p>It is important for the and gate&#8217;s back to be a straight line, and the or gate have a curve at the back.</p></li>
+<li><p>To invert (or &#8220;not&#8221;) a gate, you simply add a small circle in the front. Hence, the difference between the and and nand gates is just a small circle. Same with or and nor, and xor and xnor.</p></li>
+<li><p>The lines behind xor and xnor gates should also be curved.</p></li>
+</ul>
+
+<p>When drawing gates on an exam, we will absolutely be docking points if your gates aren&#8217;t looking as they should be. Penmanship is important in this case!</p>
+
+<p>In this class, these gates are all one-bit inputs; that is, each A and B you see in the diagram above is just a single bit. (8 bits = 1 byte.)</p>
+
+<h2 id="exampleproblem:comparecharacters">Example Problem: Compare Characters</h2>
+
+<p>A character is usually 1 byte (8 bits). Design a circuit that will determine if two characters are the same.</p>
+
+<p>We&#8217;ll have to have 8 gates because all of our gates only take 1 bit per input, and they are all 2-input gates. The first step is figuring out which gates produce true when both inputs are the same.</p>
+
+<p>The gate that does this best is xnor. When both inputs are false, xnor produces true; when both inputs are false, xnor produces true. In every other case xnor produces false, which is exactly what we&#8217;re looking for.</p>
+
+<p>Now it&#8217;s just a matter of linking up the gates together. For the two characters to be the same, the output of <em>every</em> xnor gate must be true. That sounds an awful lot like an and gate.</p>
+
+<figure>
+<img src="../static/image/Circuit1.jpg" alt="" />
+<figcaption></figcaption></figure>
+
+<h2 id="resources">Resources</h2>
+
+<p>If you want to play around with gates and see what all they can do, a very helpful resource is <a href="http://ozark.hendrix.edu/~burch/logisim/">Logisim</a>. It&#8217;s quite easy to use and very helpful in understanding circuit design.</p>
+</body>
+</html>

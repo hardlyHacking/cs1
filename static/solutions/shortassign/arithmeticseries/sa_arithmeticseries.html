@@ -1,0 +1,72 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta name="generator" content="pandoc" />
+  <title></title>
+</head>
+<body>
+<!-- <script type="text/javascript" -->
+<!--   src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"> -->
+<!-- </script> -->
+
+<script type="text/javascript"
+  src="https://c328740.ssl.cf1.rackcdn.com/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+});
+</script>
+
+<link rel="stylesheet" href="http://www.cs.dartmouth.edu/~cs1/azul.css" type="text/css" />
+
+
+<div id = "menubar">
+<ul>
+<li><a href="http://www.cs.dartmouth.edu/~cs1/syllabus.html">Syllabus</a>
+<li><a href="http://www.cs.dartmouth.edu/~cs1/schedule.html">Schedule</a>
+<li><a href="http://www.cs.dartmouth.edu/~cs1/shortassign/short_assignments.html">Short assignments</a>
+<li><a href="http://www.cs.dartmouth.edu/~cs1/labs/lab_assignments.html">Labs</a>
+<li><a href="http://www.cs.dartmouth.edu/~cs1/exams.html">Exams</a>
+<li><a href="http://www.cs.dartmouth.edu/~cs1/software.html">Course software</a>
+</ul>
+</div>
+
+<div id = "termtitle"> CS 1: Spring 2014 </div> 
+<h1>Short Assignment #5: Arithmetic Series <br />Due: Friday, April 11</h1>
+<h2 id="problem-1-using-the-debugging-tool">Problem 1: Using the debugging tool</h2>
+<p>I showed you how to use the Eclipse debugging tool in <a href="../../lectures/lecture07/lecture07.html">Lecture 7</a>. Load your solution for Problem 1 in <a href="../rich/sa_rich.html">Short Assignment 3</a> into Eclipse. Open the debugging perspective, set a breakpoint, and step through your program until it is about to execute the first statement in loop body for the year 3 A.D. At that point, the balance should be what it was at the end of year 2, namely 1.1025. Now take a screenshot and save it as <code>debug_practice.xxx</code> (where xxx is png, or tiff, or jpg, or bmp, etc.). We should be able to see the values of variables used in the loop in the upper right corner of your screen. Submit this screenshot with your short assignment.</p>
+<h2 id="problem-2-arithmetic-series">Problem 2: Arithmetic series</h2>
+<p>When you sum the integers from 1 through <span class="math"><em>n</em></span>, that sum is called an <strong>arithmetic series</strong>. For example, when <span class="math"><em>n</em> = 4</span>, the sum is <span class="math">1 + 2 + 3 + 4</span>, which equals 10. There's a nice formula for the arithmetic series, which you might have seen:</p>
+<blockquote>
+<p><span class="math">$1 + 2 + \cdots + n = \displaystyle\frac{n(n+1)}{2} \ .$</span></p>
+</blockquote>
+<p>Your job is to write a Python function that takes a positive integer parameter <code>n</code>, computes the sum <span class="math">1 + 2 + ⋯ + <em>n</em></span> directly, compares the computed sum with the value given by the above formula, and returns a boolean indicating whether the sum equals the formula's value. This function should take no input from the console, nor should it print any output to the console.</p>
+<p><em>To compute the sum directly, you are required to use a for-loop, and the header of the for-loop must make an appropriate call to the built-in function <code>range</code>.</em> Things to note:</p>
+<ul>
+<li>Remember that the last number in the list returned by <code>range</code> is 1 less than the value of the last parameter you give to <code>range</code>.</li>
+<li>You'll want to have a variable that accumulates the sum of the numbers in the list returned by <code>range</code>. You might be tempted to name this variable <code>sum</code>, which would be a perfectly good and descriptive name for this variable. But you should <em>not</em> name this variable <code>sum</code>, because Python has a built-in function with this name. If you use the name <code>sum</code>, you'll see the little yellow warning triangle in Eclipse, and this time you should heed the warning. So use a variable name that describes the purpose of the variable, but that is not <code>sum</code>.</li>
+<li>Remember that the operator <code>==</code> compares two values and gives a boolean that tells you whether the two values are equal. Your function returns a boolean that is the result of this comparison. Therefore, your function should not need to include an if-statement anywhere, and if it does, then you will not get a 2 on this assignment.</li>
+</ul>
+<p>I was able to write this function so that its body contained just four non-blank, non-comment lines.</p>
+<p>In addition to the function that checks the arithmetic series, you should write code that repeatedly prompts the user for a number, calls the function with that number, and prints out to the console a message indicating whether the formula works for that number. Your program should terminate once a negative number or 0 is entered. Here's output from my program:</p>
+<pre><code>Enter a number: 5
+5 checks out OK.
+Enter a number: 9
+9 checks out OK.
+Enter a number: 20
+20 checks out OK.
+Enter a number: -1
+</code></pre>
+<p>Remember that you can call the <code>raw_input</code> function to get a string from the console, and then you can call <code>int</code> on the result of <code>raw_input</code> to convert the characters entered into an int. Don't worry about error checking, so that if the input is <code>five</code>, then yeah, an error occurs. A reminder that if you supply a string as the parameter to <code>raw_input</code>, then that string will be the prompt to the user. Do <em>not</em> call your function that checks the arithemetic series on a negative number or 0. In order to make sure that your function is called only on positive numbers, you <em>are</em> allowed to use an if-statement in the part of your program that gets input and calls your function. You may also use an if-statement when deciding what output to print to the console.</p>
+<h2 id="what-to-turn-in">What to turn in</h2>
+<ol style="list-style-type: decimal">
+<li><p>The screenshot from Problem 1.</p></li>
+<li><p>Your program from Problem 2.</p></li>
+<li><p>Output from your program from Problem 2, showing the function called on at least three numbers, and also showing the program stopping once a negative number or 0 is entered.</p></li>
+</ol>
+<p>At this point, you know how to turn in short assignments, so I don't need to provide the instructions.</p>
+</body>
+</html>

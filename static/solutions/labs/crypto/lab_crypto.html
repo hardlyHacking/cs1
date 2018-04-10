@@ -1,0 +1,175 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta name="generator" content="pandoc" />
+  <title></title>
+  <style type="text/css">
+/*<![CDATA[*/
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode, table.sourceCode pre 
+   { margin: 0; padding: 0; border: 0; vertical-align: baseline; border: none; }
+td.lineNumbers { border-right: 1px solid #AAAAAA; text-align: right; color: #AAAAAA; padding-right: 5px; padding-left: 5px; }
+td.sourceCode { padding-left: 5px; }
+code.sourceCode span.kw { color: #007020; font-weight: bold; } 
+code.sourceCode span.dt { color: #902000; }
+code.sourceCode span.dv { color: #40a070; }
+code.sourceCode span.bn { color: #40a070; }
+code.sourceCode span.fl { color: #40a070; }
+code.sourceCode span.ch { color: #4070a0; }
+code.sourceCode span.st { color: #4070a0; }
+code.sourceCode span.co { color: #60a0b0; font-style: italic; }
+code.sourceCode span.ot { color: #007020; }
+code.sourceCode span.al { color: red; font-weight: bold; }
+code.sourceCode span.fu { color: #06287e; }
+code.sourceCode span.re { }
+code.sourceCode span.er { color: red; font-weight: bold; }
+/*]]>*/
+  </style>
+</head>
+<body>
+<!-- <script type="text/javascript" -->
+<!--   src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"> -->
+<!-- </script> -->
+
+<script type="text/javascript"
+  src="https://c328740.ssl.cf1.rackcdn.com/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+});
+</script>
+
+<link rel="stylesheet" href="http://www.cs.dartmouth.edu/~cs1/azul.css" type="text/css" />
+
+
+<div id = "menubar">
+<ul>
+<li><a href="http://www.cs.dartmouth.edu/~cs1/syllabus.html">Syllabus</a>
+<li><a href="http://www.cs.dartmouth.edu/~cs1/schedule.html">Schedule</a>
+<li><a href="http://www.cs.dartmouth.edu/~cs1/shortassign/short_assignments.html">Short assignments</a>
+<li><a href="http://www.cs.dartmouth.edu/~cs1/labs/lab_assignments.html">Labs</a>
+<li><a href="http://www.cs.dartmouth.edu/~cs1/exams.html">Exams</a>
+<li><a href="http://www.cs.dartmouth.edu/~cs1/software.html">Course software</a>
+</ul>
+</div>
+
+<div id = "termtitle"> CS 1: Spring 2014 </div> 
+<h1>Lab 2: I've got a secret <br />Due: Monday, April 22 <br />Checkpoint due: Wednesday, April 17</h1>
+<h2 id="special-note-for-windows-users">Special note for Windows users</h2>
+<p>We are finding that some people who use Windows have code that is correct but that does not decrypt or encrypt correctly when it runs on a Windows machine. We thought that we had solved these Windows problems, but apparently we have not. If you are running on Windows and your code does not work, it is possible that your code is correct. Try running your code on a Mac, such as the iMacs in 003 Sudikoff. It just might run there. If it does not, then the problem is in your code.</p>
+<h2 id="a-hybrid-cryptosystem">A hybrid cryptosystem</h2>
+<p>In this lab assignment, you will implement a hybrid cryptosystem based on a one-time pad whose key is encrypted with RSA. We will cover the material you need for this lab assignment in lecture.</p>
+<p>Here is the basic idea. You will have access to a ciphertext file that I have encrypted with a one-time pad, using the XOR encryption technique and a block size of 16 bytes, as we discussed in class. The ciphertext file will include, as its first line, the key that you need to decrypt the file. Everyone will be able to access your ciphertext file, which means that everyone will be able to see the key that I used to encrypt the file. I don't want that key intercepted, however, and so the key, as it appears in the file, is encrypted using RSA. I will provide you with your RSA secret key and your RSA public key.</p>
+<p>You need to write code to do the following steps:</p>
+<ol style="list-style-type: decimal">
+<li><p>Read the first line of the ciphertext file, which gives the RSA-encrypted one-time pad.</p></li>
+<li><p>Using your RSA secret key, decrypt the encrypted one-time pad to give the actual one-time pad.</p></li>
+<li><p>Decrypt the remainder of the ciphertext file, using the one-time pad, to produce a plaintext file.</p></li>
+<li><p>Make sure that what you've decrypted looks like an actual text file. It should be a document that you can easily recognize.</p></li>
+<li><p>Create a random one-time pad that is 16 bytes long.</p></li>
+<li><p>Using your section leader's public key, encrypt the one-time pad, and write it into a new file, using the same format as in the ciphertext file that you started with in step 1.</p></li>
+<li><p>Encrypt the plaintext file using the one-time pad that you craeted, appending it to the file that you started in step 6. You have now created your own ciphertext file, readable only by your section leader.</p></li>
+</ol>
+<p>When you are done, you will email the following to your section leader: your code, the decrypted plaintext file, and the ciphertext file that you encrypted for your section leader. Your section leader should be able to decrypt the ciphertext file.</p>
+<p>Your RSA secret and public keys are yours and yours alone. I have generated different keys for everyone in the course.</p>
+<p>Sound tricky? I sure hope so—we don't want our messages intercepted! But we'll start with a checkpoint (due Wednesday) so that you can work on a manageable block of it first.</p>
+<h2 id="checkpoint">Checkpoint</h2>
+<p>Let's worry about RSA later. For the checkpoint, you'll write some functions that encrypt and decrypt text by XORing with a one-time pad. <strong>For the checkpoint only</strong> we will assume that the key is <a
+name="key"></a></p>
+<pre class="sourceCode"><code class="sourceCode python"><span class="co"># XOR-key FOR THE CHECKPOINT ONLY</span><br />KEY = <span class="dv">295556873421021697574671957841159273934</span></code></pre>
+<p><strong>This key will not work for the rest of the lab; it's just a key that we can use to try things out during the checkpoint.</strong> It's a number that requires 128 bits—that is, 16 bytes—to store.</p>
+<h3 id="string-to-long">String to long</h3>
+<p>Before we can use this key, we need to be able to convert strings to long ints, and vice versa, because you can't XOR directly with a string. The first function to write will be <code>string_to_long</code>, which will take a string, and return a long int.</p>
+<p>The idea is the same as we discussed in class. Take character 0 in the string. Convert that into a byte. Put it into the 0 byte over the converted value. Take character 1 in the string. Convert to a byte. Put that byte into the 1 byte of the final converted value. Continue until all bytes are converted.</p>
+<p>You'll need some of the functions and operators on bits and bytes that we discussed in class. Read the lecture notes carefully; the example of converting &quot;farm&quot; to an int will be particularly helpful when writing <code>string_to_long</code>.</p>
+<p>Here is the function header and some initial comments to get you started:</p>
+<pre class="sourceCode"><code class="sourceCode python"><span class="co"># Takes a string and converts it to a long int.</span><br /><span class="co"># Character 0 of the string should be in byte 0 of the </span><br /><span class="co"># long when we are done.  (Recall that byte 0 is the rightmost byte.)</span><br /><br /><span class="kw">def</span> string_to_long(s):<br />    converted = <span class="dv">0</span>     <span class="co"># holds the converted int</span><br /><br />    <span class="co"># YOU WRITE THIS PART</span><br /><br />    <span class="co"># Make sure it's a long int (rather than just an int) before returning.</span><br />    <span class="kw">return</span> <span class="dt">long</span>(converted)</code></pre>
+<h3 id="testing-your-code">Testing your code</h3>
+<p>You should (read: must) test your code as you go along. Designing good tests can take some time, but this time always pays off. When you have a working piece of code that you can integrate into other code, you know that if the integrated code has a bug, it's probably not in the code that you've thoroughly tested.</p>
+<p>Here is some code to test <code>string_to_long()</code>; you should include it in your solution. <strong>Naturally, you should also cite me as the author of this code in your solution; it is good to get into this habit.</strong></p>
+<pre class="sourceCode"><code class="sourceCode python"><span class="co">## Test code for string_to_long:</span><br /><br /><span class="kw">print</span> <span class="st">&quot;----------------&quot;</span><br /><span class="kw">print</span> <span class="st">&quot;Testing string_to_long&quot;</span><br /><span class="kw">print</span><br /><br /><span class="kw">print</span> <span class="st">&quot;string_to_long('K') should be 75: &quot;</span>, string_to_long(<span class="st">&quot;K&quot;</span>) <br /><span class="kw">print</span> <span class="st">&quot;  Binary should be 0b1001011:  &quot;</span> + <span class="dt">bin</span>(string_to_long(<span class="st">&quot;K&quot;</span>))<br /><span class="kw">print</span><br /><br /><span class="kw">print</span> <span class="st">&quot;string_to_long('e') should be 101: &quot;</span>, string_to_long(<span class="st">&quot;e&quot;</span>)<br /><span class="kw">print</span> <span class="st">&quot;  Binary should be 0b1100101:  &quot;</span> + <span class="dt">bin</span>(string_to_long(<span class="st">&quot;e&quot;</span>))<br /><span class="kw">print</span><br /><br /><span class="co"># 'Ke' should have a binary value with byte 0 from 'K' and byte 1 from 'e'</span><br /><span class="kw">print</span> <span class="st">&quot;string_to_long('Ke') should be 25931: &quot;</span>, string_to_long(<span class="st">&quot;Ke&quot;</span>) <br /><span class="kw">print</span> <span class="st">&quot;  Binary should be (spaces added) 1100101 01001011:  &quot;</span> + <span class="dt">bin</span>(string_to_long(<span class="st">&quot;Ke&quot;</span>))<br /><span class="kw">print</span><br /><br /><span class="kw">print</span> <span class="st">&quot;string_to_long('Kermit') should be 127996156601675: &quot;</span>, string_to_long(<span class="st">&quot;Kermit&quot;</span>)<br /><span class="kw">print</span></code></pre>
+<h3 id="long-to-string">Long to string</h3>
+<p>Once you have tested <code>string_to_long</code>, you are ready to write the next function, which will convert a long to a string. To do so, it is helpful to know how many bytes there are in the long (which should be equal to the number of characters in the string); we pass this number to the function as the parameter <code>num_bytes</code>. Here's the header:</p>
+<pre class="sourceCode"><code class="sourceCode python"><span class="co"># Takes a long l, and assuming that it is a representation of a string</span><br /><span class="co"># with num_bytes characters, returns that string.</span><br /><br /><span class="kw">def</span> long_to_string(l, num_bytes):<br />    <span class="co"># YOU WRITE THIS PART</span></code></pre>
+<p>Of course, you should test this code carefully, too, by writing some test code. I won't provide this code for you, but the test <em>should be as detailed as my tests for <code>string_to_long</code></em>. Some good numbers to test on would be numbers generated by <code>string_to_long</code>, but test on other numbers, too.</p>
+<h3 id="xoring-a-block">XORing a block</h3>
+<p>Ok, now that you've got functions to convert between strings and long ints, you can encrypt a string by converting and then XORing. It's not in the Scrabble dictionary, but computer scientists use it as a verb.)</p>
+<p>Assuming that you have the one-time pad as a string of bytes, you need to write a function that XORs a string of text—that is, a block—with the one-time pad, byte by byte. In order for this operation to be valid, the length of the one-pad must be at least the length of the block.</p>
+<p>Write a function with the following header:</p>
+<pre class="sourceCode"><code class="sourceCode python"><span class="co"># XOR a block of text, byte by byte, with a key, which is a string of bytes.</span><br /><span class="co"># The key must be at least as long as the block.</span><br /><span class="co"># Return the XORed block of text.</span><br /><span class="kw">def</span> xor_block(key, block):</code></pre>
+<p>Both <code>key</code> and <code>block</code> are strings. Your function should return a string of the same length as <code>block</code> in which the <span class="math"><em>i</em></span>th character of the returned string is the <span class="math"><em>i</em></span>th character of <code>block</code> XORed with the <span class="math"><em>i</em></span>th character of <code>key</code>. Remember that you can call the built-in function <code>ord</code> to convert a character to its integer ASCII code, and you can call the built-in function <code>chr</code> to convert an integer in the range 0 to 255 into its corresponding ASCII character. <em>The first line in the body of your function should be an assert-statement that checks that the length of <code>key</code> is at least the length of <code>block</code>.</em></p>
+<p>Test this function by first calling <code>long_to_string</code> to convert the <a href="#key">16-byte key from above</a> to a 16-character string, and then using this string as the key. The block may be any string that is at most 16 characters long, for example, <code>&quot;extraterrestrial&quot;</code>. Print out the result of XORing the key with the block by calling <code>xor_block</code>. Let's call this result <code>xored_block</code>. Then call <code>xor_block</code> <em>again</em>, using the very same key, but now the block is <code>xored_block</code>. You should get your original string back. Print it.</p>
+<p>For the main part of the lab, you will have to generate your own random one-time pad. If you like, you may do so as part of the checkpoint. Just generate a string of 16 characters in which each character's ASCII code is a random number in the range from 0 to 255. (Remember that you can call <code>randint</code> from the <code>random</code> module.)</p>
+<p><strong>This completes your checkpoint code.</strong> Email your checkpoint code for <code>string_to_long</code>, <code>long_to_string</code>, and <code>xor_block</code>, your test code, and the output of your test code to your section leader by 1:45 pm on Wednesday.</p>
+<h1 id="the-main-part-of-the-lab-assignment">The main part of the lab assignment</h1>
+<h2 id="decrypting-the-ciphertext-file">Decrypting the ciphertext file</h2>
+<p>In order to access your ciphertext file and your RSA public and secret keys, you have to go through the CS 1 course Blackboard site. Click on &quot;Assignments&quot;, and then click on &quot;Lab 2 ciphertext files and RSA keys&quot;. You'll see a list of everyone in the course, including all students, staff, and auditors. You should find your name listed there, followed by links to three files:</p>
+<ul>
+<li>ciphertext file: the file containing the encrypted one-time pad, followed by the encrypted plaintext.</li>
+<li>public key: your RSA public key. For example, my public key has <span class="math"><em>e</em> = 5</span> and <span class="math"><em>n</em> = 2159123050209947376692482410137904844964553686060761069783685159241738663307223779201643052329271107</span>.</li>
+<li>secret key: your RSA secret key.</li>
+</ul>
+<p><em>Everyone</em> can read your ciphertext file and public key. But <em>only you</em> can read your secret key. When you click on the link for the secret key, you will have to authenticate yourself through the Dartmouth web authentication system. That's where you have to enter your Dartmouth NetId and password. Once you authenticate yourself, you'll see your RSA secret key.</p>
+<p><strong>Check as soon as you can that you can see your RSA secret key. If you cannot see it, contact Professor Cormen as soon as possible so that he can correct the problem.</strong></p>
+<h2 id="ciphertext-file-format">Ciphertext file format</h2>
+<p>The ciphertext is encrypted using a block cipher with a block size of 128 bits, or 16 bytes. Therefore, the one-time pad used to encrypt is 16 bytes long.</p>
+<p>The ciphertext file has two parts. The first part is the one-time pad, expressed as a 16-byte integer, but RSA-encrypted with your public key. This part has just digits, which you should interpret as a character string and convert to a long int in the normal way, i.e., by calling the built-in function <code>long</code>. This string is terminated by a newline character (<code>&quot;\n&quot;</code>). For example, in my ciphertext file, the first line reads</p>
+<pre><code>1723935353879034222792566864233962221512602954270504188126756867927591713164509061347937049568994884
+</code></pre>
+<p>Then, use your RSA secret key to convert this (very long) int into a 16-byte one-time pad. When I use my secret key to convert the above int into a 16-byte one-time pad, I get the number 223590384518051321581512195131726462731, which is represented in binary by the 128 bits</p>
+<pre><code>10101000001101011111000100010010000100101111000010110000000011011000110111110111110001111000100111000001110100010111111100001011
+</code></pre>
+<p>forming my one-time pad.</p>
+<p>After the RSA-encrypted public key and the newline character comes the actual ciphertext. It is encrypted with the (decrypted) one-time pad, one 16-byte block at a time.</p>
+<p>To decrypt the ciphertext, take it in 16-character blocks, and then XOR each character in turn with one byte of the one-time pad. You can (and should) use the <code>xor_block</code> function you wrote for the checkpoint.</p>
+<h2 id="reading-and-writing-files">Reading and writing files</h2>
+<p>You won't read the ciphertext file line by line. Yes, the encrypted pad is on its own line, but after that, the file contains a random-looking jumble of characters. There might be some newline characters in there, but only if a character of the ciphertext just happens to have the same ASCII character code as a newline. For the ciphertext part of the file (i.e., everything after the encrypted pad and the newline that follows it), just think of it as a steady stream of characters.</p>
+<p>The notes from <a href="http://www.cs.dartmouth.edu/~cs1/lectures/lecture08/lecture08.html">Lecture 8</a> cover how to read files a line at a time and byte by byte. They even tell you how to read the first line, byte by byte. After reading the first line, you should read the rest of the file in blocks of 16 bytes, so that you can XOR them with the one-time pad.</p>
+<p>After reading a block of 16 bytes (the very last block might be shorter) and XORing it with the one-time pad, you should write out the resulting string of 16 bytes (again, for the very last block it might be fewer than 16 bytes) to a file containing the decrypted text. If you do it right, it will match the plaintext that I sent you, and it will be a document that you should recognize.</p>
+<h2 id="bit-diddling">Bit diddling</h2>
+<p>The notes from <a href="http://www.cs.dartmouth.edu/~cs1/lectures/lecture10/lecture10.html">Lecture 10</a> cover the bitwise operations that you'll need.</p>
+<h2 id="modular-exponentiation">Modular exponentiation</h2>
+<p>You need to perform modular exponentiation in order to decrypt and encrypt with RSA. Fortunately for you, I have provided code for modular exponentiation. You can grab it from <a href="mod_exp.py">mod_exp.py</a>, and here's the code:</p>
+<pre class="sourceCode"><code class="sourceCode python"><span class="co"># mod_exp.py</span><br /><span class="co"># Written by THC.</span><br /><span class="co"># Provides a modular exponentiation function.</span><br /><br /><span class="co"># Return (x**d) % n.</span><br /><span class="kw">def</span> modular_exponentiation(x, d, n):<br />    result = <span class="dv">1</span><br />    multiplier = x<br /><br />    <span class="co"># Invariant: If d_k is the k least significant bits of d,</span><br />    <span class="co"># then at the start of each iteration, result = (x**d_k) % n.</span><br />    <span class="kw">while</span> d &gt; <span class="dv">0</span>:<br />        <span class="kw">if</span> d % <span class="dv">2</span> == <span class="dv">1</span>:<br />            result = (result * multiplier) % n<br />        multiplier = (multiplier * multiplier) % n<br />        d /= <span class="dv">2</span><br /><br />    <span class="kw">return</span> result</code></pre>
+<h2 id="what-to-do">What to do</h2>
+<p>You have to decrypt the ciphertext file I made for you, and then you have to encrypt the resulting plaintext, producing ciphertext for your section leader.</p>
+<p>I have told you how to find your ciphertext file, RSA public key, and RSA secret key. Your RSA secret key and your ciphertext file, along with the software you write, should be enough for you to decrypt the ciphertext file.</p>
+<p>To encrypt a file, you'll need to generate a random one-time pad (as mentioned in the checkpoint section, just generate 16 bytes, each a random number from 0 to 255, by calling the <code>randint</code> function from the <code>random</code> module), encrypt it using your section leader's RSA public key, and apply the one-time pad to the plaintext that you determined by decrypting the ciphertext file I made for you. Make sure that the ciphertext file that you create has the same format as the ciphertext file I made for you: the encrypted one-time pad, followed by a newline, followed by the ciphertext. You can verify that your encryption software works correctly by encrypting with <em>your</em> RSA public key and then decrypting with your RSA secret key. You should get the same contents back.</p>
+<h2 id="what-to-turn-in">What to turn in</h2>
+<p>Submit your code, the plaintext file that you decrypted from the ciphertext file I made for you, and the encrypted ciphertext file that you made for your section leader.</p>
+<h2 id="grading-criteria">Grading criteria</h2>
+<p>Checkpoint: 5 points. 3 of the 5 points are for correct behavior, and the remaining 2 points are for implementation and style.</p>
+<p>The remaining 35 points are for the final version.</p>
+<p>Correctness: 29 points</p>
+<ul>
+<li>Decryption code correctly decrypts the one-time pad: 5 points</li>
+<li>Decryption code correctly decrypts the plaintext: 5 points</li>
+<li>Decryption code writes the plaintext file correctly: 2 points</li>
+<li>Encryption code generates a random one-time pad: 5 points</li>
+<li>Encryption code correctly encrypts the one-time pad: 5 points</li>
+<li>Encryption code correctly encrypts the plaintext: 5 points</li>
+<li>Encryption code writes the ciphertext file correctly: 2 points</li>
+</ul>
+<p>Style: 6 points</p>
+<ul>
+<li>Clear design and organization: 3 points</li>
+<li>Good variable names, function names, and comments: 3 points</li>
+</ul>
+<p>Lateness:</p>
+<ul>
+<li>Submitted between 1:46 pm and 5:00 pm Monday: –4 points.</li>
+<li>Submitted between 5:01 pm Monday and 5:00 pm Tuesday: –16 points.</li>
+</ul>
+<h2 id="extra-credit-ideas">Extra credit ideas</h2>
+<p>Be creative. Here are some suggestions.</p>
+<ul>
+<li><p><strong>Cipher block chaining</strong>: 5 points. Implement cipher block chaining, as described in the lecture. Make sure to implement it in encryption and decryption. You'll need submit a file encrypted and decrypted with cipher block chaining to demonstrate that it works.</p></li>
+<li><p><strong>Checksums</strong>: 10 points. One easy attack on the hybrid system would be for someone to intercept the ciphertext and modify it, by adding bytes somewhere in the file or by modifying bytes in the file. One way to detect whether the ciphertext has been compromised is to include checksum information along with the encrypted pad and the ciphertext. A <strong>checksum</strong> is a weighted sum of the bytes in the plaintext file. For example, you could just add up all the byte values, but that's a poor solution: if the adversary knows the block size, then he (or she) could swap the <span class="math"><em>i</em></span>th byte of one block of ciphertext with the <span class="math"><em>i</em></span>th byte of another block of ciphertext and get the same checksum. Alternatively, you could weight the byte values by multiplying the <span class="math"><em>i</em></span>th byte of plaintext by <span class="math"><em>i</em></span>. Of course, you'll need to include the checksum, encrypted, in the ciphertext file, and you'll need to verify that the checksum matches what's included in the ciphertext file when decrypting.</p></li>
+<li><p><strong>Generate RSA keys</strong>: 20 points. Write code that generates RSA public and secret keys, given the number of decimal digits in the factors <span class="math"><em>p</em></span> and <span class="math"><em>q</em></span>. The information you need is in the lecture notes; some of it appears in sections labeled &quot;Bonus coverage.&quot;</p></li>
+<li><p><strong>Digital signatures</strong>: 15 points. One way to verify that a message came from who it is claimed to come from is a <strong>digital signature</strong>. The sender encrypts the message with his or her secret key to form a digital signature for the message and adds the digital signature to what is sent. The recipient decrypts the message with the recipient's secret key and then decrypts the digital signature with the sender's public key. Only the sender could have encrypted the message with the sender's secret key, and so the recipient can check the digital signature against the message to make sure that they match.</p>
+<p>In practice, you don't digitally sign the whole message. Instead, you come up with a hash function, run the entire message through the hash function to get a hash value, and form the digital signature by encrypting the hash value with your secret key. The sender and receiver have to agree on the hash function, so you should include the hash function (as Python code) in the message, encrypted with the one-time pad. A good hash function is <strong>collision resistant</strong>: it's computationally infeasible (sun burning out) to find two different messages that hash to the same value.</p></li>
+</ul>
+</body>
+</html>

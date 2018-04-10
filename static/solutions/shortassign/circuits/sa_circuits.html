@@ -1,0 +1,137 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta name="generator" content="pandoc" />
+  <title></title>
+</head>
+<body>
+<!-- <script type="text/javascript" -->
+<!--   src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"> -->
+<!-- </script> -->
+
+<script type="text/javascript"
+  src="https://c328740.ssl.cf1.rackcdn.com/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+});
+</script>
+
+<link rel="stylesheet" href="http://www.cs.dartmouth.edu/~cs1/azul.css" type="text/css" />
+
+
+<div id = "menubar">
+<ul>
+<li><a href="http://www.cs.dartmouth.edu/~cs1/syllabus.html">Syllabus</a>
+<li><a href="http://www.cs.dartmouth.edu/~cs1/schedule.html">Schedule</a>
+<li><a href="http://www.cs.dartmouth.edu/~cs1/shortassign/short_assignments.html">Short assignments</a>
+<li><a href="http://www.cs.dartmouth.edu/~cs1/labs/lab_assignments.html">Labs</a>
+<li><a href="http://www.cs.dartmouth.edu/~cs1/exams.html">Exams</a>
+<li><a href="http://www.cs.dartmouth.edu/~cs1/software.html">Course software</a>
+</ul>
+</div>
+
+<div id = "termtitle"> CS 1: Spring 2014 </div> 
+<h1>Short Assignment #9: Circuits <br />Due: Monday, May 26</h1>
+<p> There will be no Python programming for this short
+assignment. Answer each question below.</p>  For the questions that
+ask you to draw a circuit, you may either draw them by hand or use any
+standard drawing program (attached at the bottom of this page are
+icons for the three gates that you will need). If you draw your
+circuit by hand you should either photograph or scan your drawing for
+electronic submission to your section leader.
+
+
+<ol>
+<li> Consider the following Boolean expression <code>(a <sup>.</sup>
+b) + (a <sup>.</sup> c)</code>. Show that this is equivalent to the
+following Boolean expression <code>a <sup>.</sup> (b + c)</code>. The
+most straight forward way to show that these expressions are the same
+is to build a truth table for each expression and show that they are
+equivalent. You should create one truth table with columns for the
+three inputs <code> a, b, c</code>, the
+sub-expression <code>(a <sup>.</sup>  b)</code>
+and <code>(a <sup>.</sup>  c)</code>, and the
+expression <code>(a <sup>.</sup>  b) + (a <sup>.</sup>  c)</code>. You
+should then create a second truth table with columns for the three
+inputs <code> a, b, c</code>, the sub-expression <code>(b + c)</code>,
+and the expression <code>a <sup>.</sup> (b + c)</code>. <br><br>
+
+<li> Imagine that you have designed a circuit that uses <code>N</code>
+expressions of the form <code>(a <sup>.</sup> b) + (a <sup>.</sup>
+c)</code>. We replace these expressions with expressions of the
+form <code>a <sup>.</sup> (b + c)</code>. How many fewer transistors
+will we use when building this circuit? Briefly explain.  <br><br>
+
+<li> Consider the following Boolean expression <code>(a +
+b) <sup>.</sup> (a + c)</code>. Provide a simpler expression (fewer
+gates) that is equivalent. Show that your expression is equivalent by
+building truth tables for both expressions in the same way as in the
+first question. <br><br>
+
+<li> Imagine that you have designed a circuit that uses <code>N</code>
+expressions of the form <code>(a + b) <sup>.</sup> (a + c)</code>. We
+replace each of these with your solution to the previous question. How
+many fewer transistors will we use when building this circuit? Briefly
+explain.  <br><br>
+
+<li> The NAND operator (Not And) has two inputs and one output. The
+value of the output is 0 if an only if both inputs are 1. This, you
+can see, is the Not of an And operator. Now, recall that an AND gate
+and OR gate can each be constructed from two transistors while a NOT
+gate can be constructed from one transistor and a resistor. A NAND
+gate can be constructed from two transistors and one resistor. Draw
+the configuration of two transistors and resistor that implement a
+NAND gate. <br><br>
+
+<li> Build a majority-rules circuit. This is a circuit that has three
+inputs and one output. The value of its output is 1 if an only if two
+or more of its inputs are 1; otherwise the output of the circuit is
+0. For example, if the three inputs are 0, 1, 1, your circuit should
+output a 1. If its three inputs are 0, 1, 0, it should output a
+0. This circuit is frequently used in fault-tolerant computing
+environments where a computer must keep working correctly no matter
+what, for example as on a deep-space vehicle where making repairs is
+impossible. In these conditions, we might choose to put three
+computers on board and have all three do every computation; if two or
+more of the systems produce the same answer, we accept it. Thus, one
+of the machines could fail and the system would still work properly. <br><br>
+
+You should provide the full truth-table, the sub-expressions, the
+final Boolean expression, and draw the circuit. <br><br>
+
+<li> A decoder is a special type of circuit termed a control circuit
+that is used to route data on a computer. This circuit
+has <code>N</code> inputs and <code>2<sup>N</sup></code> outputs.  The
+<code>N</code> input values are interpreted as a single (unsigned)
+binary number representing a value between <code>0</code> and
+<code>2<sup>N-1</sup></code>.  The decoder's job is to determine the
+value represented on its <code>N</code> input lines and then to send a
+1 to one output line corresponding to this value. For example a 2-4
+decoder circuit has 2 input lines and 4 output lines. If the input
+values are 00, then the first output line will have a value of 1, and
+the other output lines will have a value of 0. If the input values are
+01, then the second output line will have a value of 1, and the other
+output lines will have a value of 0, etc. <br><br>
+
+Build a 3-8 decoder that has 3 input lines and 8 output lines. You
+should provide the full truth-table, the sub-expressions, the final
+Boolean expression, and draw the circuit.
+
+</ol>
+
+<h2>What to Submit</h2>
+
+<p> You should submit a single Word (.doc) or Text (.rtf) document containing all of your solutions.</p>
+
+
+<h2>Gates</h2>
+
+<img src="and.png"> &nbsp&nbsp
+<img src="or.png"> &nbsp&nbsp
+<img src="not.png">
+</body>
+</html>

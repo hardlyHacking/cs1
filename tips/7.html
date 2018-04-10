@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Tips7</title>
+<link rel=stylesheet type=text/css href="../static/css/style.css">
+</head>
+<body>
+<h1 id="complexityanalysis">Complexity Analysis</h1>
+
+<h2 id="whybother">Why Bother</h2>
+
+<p>What is complexity analysis, and why do computer scientists use it?</p>
+
+<p>Production-level computer programs &#8211; the kind used by companies like Google and Facebook &#8211; are <em>very</em> large and incredibly complex. They have hundreds of thousands of lines of code. So how can they ensure that things are running as fast as they can be?</p>
+
+<p>Of course, there are tools for this. Profilers are basically complicated programs that go through other programs and calculate how much time is being spent and where. Using this, a human can go through and try to figure out where to make things faster.</p>
+
+<p>But do you think this is how companies do it? They write garbage the first time, throw it at the profiler, which then tells them that it is garbage, and then they resolve to fix it later?</p>
+
+<p>Of course not. They want the first draft to be as close as possible to the final shipment!</p>
+
+<p>So how can we get a really <em>good</em> first-order approximation for a fast program?</p>
+
+<p>Enter complexity analysis.</p>
+
+<p>Complexity analysis gives us a good way of choosing the algorithm that will be the fastest for various given input sizes. When done correctly, it guarantees that no other algorithm is faster. Of course, your program may still be slow because of implementation issues, but fixing implementation issues is far closer than changing the algorithm itself!</p>
+
+<h2 id="how-to">How-To</h2>
+
+<p><strong>1. Constants don&#8217;t matter</strong></p>
+
+<p>They don&#8217;t. Not for complexity analysis.</p>
+
+<p>Imagine you had an algorithm that evaluated to <code>O(n^2 + 5)</code>. Is that really so different than <code>O(n^2 + 8)</code>? No.</p>
+
+<p>Let me play devil&#8217;s advocate for a moment. Why isn&#8217;t it different? The first algorithm is, by definition, faster than the second. Shouldn&#8217;t it be preferred?</p>
+
+<p>Remember the purpose of complexity analysis: To give a good first order approximation. The constants <code>5</code> and <code>8</code> can be sorted out during the implementation details. A particularly clever implementation might actually get rid of that constant entirely, who knows.</p>
+
+<p>The important thing here is that the relationship between the input size and the algorithm complexity is <code>O(n^2)</code>.</p>
+
+<p><strong>2. Choose the driving term</strong></p>
+
+<p>Think of these complexity factors as a function. Which term drives the function?</p>
+
+<p>In <code>O(n^3 + n^2 + n + 1)</code>, it&#8217;s obvious that the <code>n^3</code> is the major determining factor of the result. That&#8217;s the most important thing, and, as <code>n</code> gets larger, it drowns out the other two terms.</p>
+
+<p>It is for this precise reason we say that <code>O(n^3 + n^2 + 1)</code> evaluates to <code>O(n^3)</code>.</p>
+
+<p>You may have noticed many sorting algorithms use <code>O(n•log(n))</code>, and thus are wondering why don&#8217;t we just evaluate that to <code>O(n)</code>, since <code>n</code> is clearly larger than <code>log(n)</code>. The difference is that <code>n•log(n)</code> is a single term due to the multiplication, whereas the addition of <code>n^3 + n^2</code> shows they are two separate terms. We cannot reduce a single term further.</p>
+
+<p><strong>3. Big Oh</strong></p>
+
+<p>What does the capital O (called &#8220;Big-Oh&#8221;) really mean? Computer scientists don&#8217;t just put it there for good times. It turns out there is a specific meaning associated with it, and there are other Big letters that we won&#8217;t go over in this class.</p>
+
+<p>Big-Oh sets an <em>upper</em> bound. That is, it means that this is the <em>most</em> this code can be. This means that, technically, even a code that is <code>O(n)</code> is indeed <code>O(n^2)</code> or even <code>O(n^3)</code>, because indeed a code that is linear will never go beyond a cubic function.</p>
+
+<p>So why don&#8217;t we just say <code>O(n^10000)</code> for every single question and be done with it? Because it&#8217;s not precise. We&#8217;re after the <em>most</em> correct answer, which is the estimation that most closely approximates the code.</p>
+
+<p>This means that even though <code>O(n^5)</code> is technically correct, if the code is actually <code>O(n^2)</code>, you will lose points on exams for writing the former answer.</p>
+
+<p>One last point is that when discussing complexity, we need to know <em>what</em> <code>n</code> is. So whatever code is presented, you should provide some context.</p>
+
+<h2 id="examples">Examples</h2>
+
+<p>No point in just sitting around discussing theory though. Let&#8217;s do tangible examples. Don&#8217;t just look at the answer though, take a moment to figure it out yourself.</p>
+
+<h3 id="puzzle1">Puzzle 1</h3>
+
+<pre><code>a = [0]*100
+
+for elem in a:
+    for elem2 in a:
+        print str(elem2) + str(elem1)
+</code></pre>
+
+<p>What&#8217;s the time complexity of just the first loop? It must be <code>O(n)</code> because the for loop goes over every element in <code>a</code> once. Okay, what about the second loop? This one is also <code>O(n)</code> for the same reason.</p>
+
+<p>Since the loops are nested, the total runtime must be <code>O(n) • O(n)</code>, which is <code>O(n^2)</code>.</p>
+
+<p>Thus, this code is <code>O(n^2)</code> where <code>n</code> is the length of the list <code>a</code>.</p>
+
+<h3 id="puzzle2">Puzzle 2</h3>
+
+<pre><code>n = 1048
+
+while n &gt; 0:
+    print n
+    n = n / 2
+</code></pre>
+
+<p>This one is slightly tricky. Think about (really) before giving up.</p>
+
+<p>At first you might be tempted to think it&#8217;s <code>O(n)</code> because, as we said above, constants don&#8217;t really matter. But dividing <code>n</code> by <code>2</code> every time is not a constant. It&#8217;s actually a separate term that can be expressed as a math function.</p>
+
+<p>This code is <code>O(log(n))</code> where <code>n</code> is the variable in the code <code>n</code>.</p>
+
+<p>You might be wondering why I didn&#8217;t tell you what base it was. Those of you who remember your maths might be remembering that you can actually convert from any base to any other base with a simple constant term, and that&#8217;s exactly right.</p>
+
+<p>Because we can convert from bases with a simple constant, and constants don&#8217;t matter, it doesn&#8217;t matter what base you mean when you say the &#8220;logarithm of n&#8221;. In this case, it would be log base <code>2</code>, but of course that&#8217;s irrelevant.</p>
+
+<p>Logs are quite common in run-times, so I&#8217;d get used to recognizing them!</p>
+
+<h3 id="puzzle3">Puzzle 3</h3>
+
+<pre><code>m = 1000
+i = 0
+while i &lt; m:
+    for j in range(i):
+        print j
+    i += 2
+</code></pre>
+
+<p>No matter how complex the code, start basic.</p>
+
+<p>What&#8217;s the complexity for the <code>while</code> loop? It goes over <em>half</em> the numbers from <code>0</code> to <code>m</code> because <code>i</code> is incremented by <code>2</code> every loop iteration. So that&#8217;s <code>O(n/2)</code> where <code>n</code> is the variable <code>m</code>. But as we know, constants don&#8217;t matter. So that&#8217;s simply <code>O(n)</code>.</p>
+
+<p>Great. What about the inner <code>for</code> loop? This one seems to be a little tricker. Remember that Big-Oh notation sets an <em>upper</em> bound. What&#8217;s the maximum that <code>i</code> can be? <code>m</code>. Right. Which means in the worst case, the largest case, the most time the <code>for</code> loop can take is <code>O(n)</code>.</p>
+
+<p>Thus, the runtime of this whole code block is <code>O(n^2)</code>, where <code>n</code> is the variable <code>m</code>.</p>
+
+<p>Another way to think about this is using arithmetic series. Remember that short assignment where you had to calculate the sum of <code>1</code> through <code>n</code> and you had a formula that was <code>n • (n + 1) / 2</code>? Well, the Big-Oh of this formula is <code>n^2</code>, right?</p>
+
+<p>What&#8217;s happening here is quite similar to an arithmetic series, only we&#8217;re incrementing by <code>2</code> instead of by <code>1</code> every time. But that doesn&#8217;t change the Big-Oh, since we&#8217;re not concerned with constants.</p>
+
+<h3 id="challenge:sierpinskycarpet">Challenge: Sierpinsky Carpet</h3>
+
+<p>The following images are from Lode Vandevenne&#8217;s <a href="http://lodev.org/cgtutor/sierpinski.html">website</a>.</p>
+
+<p>We&#8217;re going to estimate the runtime of an algorithm called the Sierpinsky Carpet. We start with a single square of length <code>w</code>.</p>
+
+<figure>
+<img src="http://lodev.org/cgtutor/images/siercardraw1.gif" alt="" />
+<figcaption></figcaption></figure>
+
+<p>Draw a square in the middle where the size of each side is <code>w/3</code>.</p>
+
+<figure>
+<img src="http://lodev.org/cgtutor/images/siercardraw2.gif" alt="" />
+<figcaption></figcaption></figure>
+
+<p>Now around the black square are eight white squares of equal sizes. Draw black squares inside each of these eight white squares where the side of these new black squares are one third the size of the white squares. Thus, the new black squares&#8217; sides are of length <code>w/9</code>.</p>
+
+<figure>
+<img src="http://lodev.org/cgtutor/images/siercardraw3.gif" alt="" />
+<figcaption></figcaption></figure>
+
+<p>Keep going, until the sizes of any square are just a single pixel.</p>
+
+<figure>
+<img src="http://lodev.org/cgtutor/images/siercardraw4.gif" alt="" />
+<figcaption></figcaption></figure>
+
+<p>And so on, and so forth.</p>
+
+<p>Express your answer in terms of <code>w</code>. (This one&#8217;s a toughie!)</p>
+</body>
+</html>

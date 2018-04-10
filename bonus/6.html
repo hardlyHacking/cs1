@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Bonus6</title>
+<link rel=stylesheet type=text/css href="../static/css/style.css">
+</head>
+<body>
+<h1 id="decorators">Decorators</h1>
+
+<p>Warning: This section is <em>hard</em>.</p>
+
+<h2 id="functionasparameter">Function as Parameter</h2>
+
+<p>Recall that, in Python, <em>everything</em> is an object. Even functions. This means that we can actually pass functions as parameters! Check this out.</p>
+
+<pre><code>def is_even(value):
+    '''
+    Checks if a number is even.
+    
+    Arguments:
+    value -- the number to be checked
+    
+    Returns:
+    Whether value is even
+    '''
+    
+    return value % 2 == 0
+
+
+def count_instances(some_list, some_function):
+    '''
+    Counts the number of elements in a list that pass a test.
+    
+    Arguments:
+    some_list -- the list with elements
+    some_function -- the test to apply to each element
+    
+    Returns:
+    The number of elements that pass a test
+    '''
+    
+    return sum(elem for elem in some_list if some_function(elem))
+</code></pre>
+
+<p>Nice! We can actually pass functions as paremeters. You can see how useful this is. Rather than constructing giant if-elif ladders, you can create one function that takes another as a paremeter and simply acts upon that.</p>
+
+<p>So how do we use this?</p>
+
+<pre><code>print count_instances([1, 2, 3, 4, 5], is_even)
+</code></pre>
+
+<p>Notice that, unlike previously when we call functions, <code>is_even</code> does <em>not</em> have the usual parentheses. This is because we are not calling the function; rather, we are referring to the function object.</p>
+
+<h2 id="functionasreturnvalue">Function as Return Value</h2>
+
+<p>Since functions, like everything in Python, are objects, they can also be used as return values. Here is where nested functions come in. Here is a trivial example, and then we&#8217;ll examine a more useful example.</p>
+
+<pre><code>def outer(x):
+    def inner():
+        print x
+    return inner
+
+print1 = outer(1)
+print2 = outer(2)
+print1()
+&gt;&gt;&gt; 1
+print2()
+&gt;&gt;&gt; 2
+</code></pre>
+
+<p>Interesting. We can return a function, and call it later. In fact, notice that the funciton returned by <code>outer</code> in each case was a <em>different</em> function. This is the critical concept here. The local scope of the formal parameter <code>x</code> is preserved in each call by the new output. Once again, this is called closure.</p>
+
+<p>Now imagine I want to create a function that surrounds words with a pattern. I&#8217;ll give this function a long string and it will go through and replace the words I chose with a new pattern.</p>
+
+<p>A concrete example to help you understand.</p>
+
+<p>In markdown, and many other formats, italicizing a string is done by surrounding the string with <code>*</code> on either side. So here is my sample input output.</p>
+
+<pre><code>regular = 'Wow, decorators are far more useful than I initially predicted.'
+italicized = transform(regular, ['far', 'I'], surround_width('*'))
+print italicized
+&gt;&gt;&gt; ' Wow, decorators are *far* more useful than *I* initially predicted.'
+</code></pre>
+
+<p>Let&#8217;s write the transform function.</p>
+
+<pre><code>def transform(string, chosen_words, function):
+    result = ''
+    for word in string.split():
+        if word in chosen_words:
+            result += ' {}'.format(function(word))'
+        else:
+            result += ' {}'.format(word)
+    return result
+</code></pre>
+
+<p>Notice that the third parameter of <code>transform</code> is a function! This way, we can write our code flexibly and transform with many different functions rather than writing many different transform functions.</p>
+
+<p>Now comes the hard part. How do we write this special function? Remember our previous example of closure.</p>
+
+<pre><code>def surround_with(surrounding):
+    def surround_with_value(word):
+        return '{}{}{}'.format(surrounding, word, surrounding)
+    return surround_with_value
+</code></pre>
+
+<p>Woah. This is a slightly more complicated case of closure that&#8217;s happening. First, if you&#8217;re not familiar with the string <code>format</code> method, it&#8217;s quite simple. Inside any pair of <code>{ }</code>, the method inserts the corresponding parameter. For example, <code>'{}{}{}'.format('dude', '!', 'dude')</code> would output <code>dude!dude</code> in a string.</p>
+
+<p>That&#8217;s simple enough. It&#8217;s just surrounding the <code>word</code> with whatever <code>surrounding</code> is. So now, we return a function that takes one parameter, a word, and surrounds it with <code>surrounding</code> in a string.</p>
+
+<p>In our main <code>transform</code> function, we use <code>surround_with('*')</code>. This means that the <code>function</code> parameter is a function, in this case, that surrounds a given string with <code>'*'</code> on either side.</p>
+
+<p>This notion of closure is very important.</p>
+
+<h2 id="argsandkwargs">*args and **kwargs</h2>
+
+<p>Before we discuss decorators, we need to go over the two special parameters Python has, <code>*args</code> and <code>**kwargs</code>.</p>
+
+<p>The first thing to understand is that <code>args</code> and <code>kwargs</code> can change names; the important thing is the number of asterisks preceding the variable name; usually, however, they are kept as <code>args</code> and <code>kwargs</code> for the sake of convention.</p>
+
+<p>Here is an abbreviated explanation from this excellent post from <a href="https://stackoverflow.com/questions/3394835/args-and-kwargs">Stack Overflow</a>.</p>
+
+<p>You would use <code>*args</code> when you&#8217;re not sure of how many arguments are in your function. It allows you to pass any number with no problem.</p>
+
+<pre><code>def print_many_things(*args):
+    for count, thing in enumerate(args):
+        print '{0}. {1}'.format(count, thing)
+
+print_many_things('apple', 'banana', 'cabbage') 
+</code></pre>
+
+<p>Would produce the output</p>
+
+<pre><code>0. apple
+1. banana
+2. cabbage
+</code></pre>
+
+<p>Nice. What about <code>**kwargs</code>? This is used for <em>named</em> variables.</p>
+
+<pre><code>def table_things(**kwargs):
+    for name, value in kwargs.items():
+        print '{0} = {1}'.format(name, value)
+
+table_things(apple = 'fruit', cabbage = 'vegetable')
+</code></pre>
+
+<p>Would produce the output</p>
+
+<pre><code>cabbage = vegetable
+apple = fruit
+</code></pre>
+
+<h2 id="decorators">Decorators</h2>
+
+<p>Okay, now we have established most of the background needed for decorators. (Phew! I told you it wasn&#8217;t easy&#8230;)</p>
+
+<p>A decorator function is one that takes a function (the function to be decorated) and returns a new function (the original function with the decoration applied). Think of a decoration as a change.</p>
+
+<p>Imagine we&#8217;re in charge of a shopping complex, like Walmart. And you&#8217;re writing their backend to manage accounts. So you have some class <code>Product</code>, filled with useful materials.</p>
+
+<p>As you can imagine, there are going to be <em>many</em> instances when you append the classic &#8220;$&#8221; in front of the result. So let&#8217;s write the decorator function to do that.</p>
+
+<pre><code>def currency(f):
+    def wrapper(*args, **kwargs):
+        return '$' + str(f(*args, **kwargs))
+    
+    return wrapper
+</code></pre>
+
+<p>Why do we give the function <code>f</code> the arguments <code>*args</code> and <code>**kwargs</code>? To be more flexible. Since we want this to work for as many situations as possible, and we don&#8217;t know the exact arguments that <code>f</code> takes, we need to do that.</p>
+
+<p>Now imagine we have some long complex function that adjusts all prices to tax.</p>
+
+<pre><code>class Product(database):
+
+    def price_with_tax(self, tax_rate):
+        return price * (1 + (tax_rate * 0.01))
+</code></pre>
+
+<p>And there are many others like it. How can we apply our decorator to it? Python has the shortcut <code>@</code> reserved for decorators. This minor change is all we have to do!</p>
+
+<pre><code>class Product(database):
+
+    @currency
+    def price_with_tax(self, tax_rate):
+        return price * (1 + (tax_rate * 0.01))
+</code></pre>
+
+<p>Wow! Yup, that&#8217;s it. Python will automatically wrap the <code>price_with_tax</code> function around the decorator we wrote!</p>
+
+<p>The power of this decorator style format is unbelievable. In fact, whole web development systems like Flask use and abuse it. Now that you know the basics, implement more of your own decorators!</p>
+
+<h2 id="references">References</h2>
+
+<p>Another great resource for learning Python is Jeff Knupp&#8217;s <a href="https://www.jeffknupp.com/blog/">blog</a>, where many of these examples are from. The material is excellent and quite readable. Even beginners can understand what&#8217;s going on.</p>
+</body>
+</html>

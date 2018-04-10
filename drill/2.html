@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Drill2</title>
+<link rel=stylesheet type=text/css href="../static/css/style.css">
+</head>
+<body>
+<h1 id="functionaldecomposition">Functional Decomposition</h1>
+
+<blockquote>
+<p>I choose a lazy person to do a hard job. Because a lazy person will find an easy way to do it. <cite>&#8211; Bill Gates</cite></p>
+</blockquote>
+
+<p>Functions are certainly interesting. But why use them? Python doesn&#8217;t demand functions at all; you <em>can</em> certainly do the entire Pong lab, for example, (or anything else) without functions.</p>
+
+<p>It turns out coding is quite repetitive. Often times, we want to do the same or very similar things over and over again; you <em>could</em> copy-paste the same code in every situation, or you could just write a function and call that instead.</p>
+
+<p>This is why we have functional decomposition. The principle of laziness is actually highly valued in computer science. The tell-tale sign of an inadequate design is repetitive code. <em>A good design minimizes code repetition.</em></p>
+
+<h2 id="functionstype">Functions Type</h2>
+
+<p>You&#8217;ve seen functions in the notes. They look something like this.</p>
+
+<pre><code>def function_name():
+    do stuff inside the function
+</code></pre>
+
+<p>Some simple examples.</p>
+
+<pre><code>def mileyCirus():
+    print &quot;Oh so cute! Such a talented little girl.&quot;
+    print &quot;Wow, she's really matured.&quot;
+    print &quot;She's gone crazy! I repeat, she's gone crazy!&quot;
+</code></pre>
+
+<p>Last recitation, we discussed the four primitive types: <code>int</code> (Integer), <code>float</code> (Float), <code>str</code> (String), and <code>bool</code> (Boolean). I alluded to the fact that there were more than just these four primitive types. In fact, there are even types that are not primitive at all! Don&#8217;t concern yourself with the differences for now.</p>
+
+<p>There is actually a separate type for functions!</p>
+
+<pre><code>&gt;&gt;&gt; type(mileyCirus)
+&lt;type 'function'&gt;
+</code></pre>
+
+<p>Wow! There&#8217;s actually a whole different type called <code>function</code> reserved just for functions. This is <strong>not</strong> a primitive type. Next time we&#8217;ll discuss the differences between primitive and non-primitive types, I promise. For now it&#8217;s enough to remember that the function type is not a primitive one, while the other four types are.</p>
+
+<p>Functions can also return, or give back, certain values. These values, like all other values, also have types. Let&#8217;s examine the following function.</p>
+
+<pre><code>def beer():
+    return &quot;drunk&quot;
+</code></pre>
+
+<p>What&#8217;s the return type of the function <code>beer</code>? A string. Not complicated. Pretty simple. How about a cooler example?</p>
+
+<pre><code>def howManyOscars(name):
+    if name == &quot;Gravity&quot;:
+        return 7
+    elif name == &quot;Matthew McConaughey&quot;:
+        return 1
+    elif name == &quot;Leonardo DiCaprio&quot;:
+        return
+    else:
+        return &quot;Invalid Name Yo!!&quot;
+</code></pre>
+
+<p>So what is the return type of this function? Hmm, well the answer is complicated. Obviously, depending on the input, the return type will be completely different! In two cases, where <code>name</code> is &#8220;Gravity&#8221; or &#8220;Matthew McConaughey&#8221;, the return type is <code>int</code>. If <code>name</code> was &#8220;Ellen Degeneres&#8221;, on the other hand, the return type would be <code>str</code>.</p>
+
+<p>But what if it was &#8220;Leonardo DiCaprio&#8221;? Hmm. I&#8217;ll give you a hint: it&#8217;s the same return type as the function <code>mileyCirus</code>.</p>
+
+<p>Python as <em>another</em> type. This one is for the cases when there is <em>no</em> return value. It&#8217;s called <code>NoneType</code>, and it only has one value: <code>None</code>.</p>
+
+<p>Really, this was just an excuse for me to point out that DiCaprio got <code>None</code> Oscars. Excuse me while I go cry for a bit.</p>
+
+<h2 id="parametersandscope">Parameters and Scope</h2>
+
+<p>Functions aren&#8217;t just short-cuts for copy-paste. They are ways to dynamically interact with data, which is why we pass parameters. Parameters are variables given to a function that it can use to do more specialized tasks.</p>
+
+<pre><code>def mileyCirus(age):
+    if age &lt;= 13:
+        print &quot;Aww, she's such a talented little girl!&quot;
+    elif age &lt;= 18:
+        print &quot;Wow, she's really matured.&quot;
+    else:
+        print &quot;She's gone crazy! I repeat, she's gone crazy!&quot;
+</code></pre>
+
+<p>In this function, the parameter <code>age</code> is used to determine just&#8230; erm, how crazy our favorite pop star has become.</p>
+
+<p>A rather funny thing happens when you define a variable <em>within</em> a function, however. Let&#8217;s look at this code.</p>
+
+<pre><code>def miley():
+    age = 15
+    print &quot;Phew! Not crazy yet...&quot;
+
+def jBeebs():
+    print age
+
+miley()
+jBeebs()
+</code></pre>
+
+<p>When we run this code, we get the following error!</p>
+
+<pre><code>Traceback (most recent call last):
+  File &quot;&lt;stdin&gt;&quot;, line 1, in &lt;module&gt;
+  File &quot;&lt;stdin&gt;&quot;, line 2, in jBeebs
+NameError: global name 'age' is not defined
+</code></pre>
+
+<p>This is a new kind of error. Last time, we saw the <code>TypeError</code>, which is what happens when the types of an expression don&#8217;t add up. This time we&#8217;re looking at a <code>NameError</code>, which is what happens when you try and access a variable but it&#8217;s not defined. In otherwords, Python has no idea what <code>age</code> is.</p>
+
+<p>Why is this happening?</p>
+
+<p>This brings up a new concept in programming called <strong>scope</strong>. The scope of a variable is <strong>the lines of code in the program where the variable can be accessed</strong>. There&#8217;s a simple rule that governs scope in Python: the LEGB Rule.</p>
+
+<p>The LEGB rule stands for</p>
+
+<ul>
+<li><p>L: Local, in the current def</p></li>
+<li><p>E: Enclosed function, any enclosing function</p></li>
+<li><p>G: Global scope, within the same module.</p></li>
+<li><p>B: Builtin to python, shared across all modules.</p></li>
+</ul>
+
+<p>Here, the L section of the LEGB rule is what&#8217;s causing our current problem. Because the parameter <code>arg</code> is defined within the function <code>miley</code>, which means that unfortunately, the function <code>jBeebs</code> does not know about it.</p>
+
+<p>How can we fix this? By making <code>age</code> global. Here&#8217;s the fixed version.</p>
+
+<pre><code>age = 15
+
+def miley():
+    print &quot;Phew! Not crazy yet...&quot;
+
+def jBeebs():
+    print age
+
+miley()
+jBeebs()
+</code></pre>
+
+<p>Now that <code>age</code> is defined <em>outside</em> of any function, it&#8217;s defined within the global scope; in other words, it can be accessed within the entire file.</p>
+
+<p>What do we mean by modules? For now, think of a module as a single file. If I created a completely different python file, then I wouldn&#8217;t be able to access the variable <code>age</code>. This is not quite accurate, but it&#8217;s close enough to what a module is for the time being.</p>
+
+<p>Great! Now we can change our <code>jBeebs</code> function to do what we really wanted: to make Justin Bieber grow up (a seemingly impossible task, I know).</p>
+
+<pre><code>def jBeebs():
+    print &quot;before, I was only &quot; + str(age) + &quot; years old&quot;
+    age = 25
+    print &quot;now, I'm 25!&quot;
+</code></pre>
+
+<p>So, that should work now, right?</p>
+
+<h1 id="references">References</h1>
+
+<p>The LEGB rule is a fantastic one that comes from the Mark Lutz and his rather fantastic <a href="http://www.amazon.com/dp/0596513984/?tag=stackoverfl08-20">book</a>. I highly encourage you all to keep a copy for reference; it&#8217;s an excellent book. It goes over a great deal more of material that this class will skip over.</p>
+</body>
+</html>

@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Tips5</title>
+<link rel=stylesheet type=text/css href="../static/css/style.css">
+</head>
+<body>
+<h1 id="objectorienteddesign">Object Oriented Design</h1>
+
+<p>A good object oriented design is not easy. What classes do you want to make? What goes into what class? What methods should each class include? What should the instance variables be?</p>
+
+<p>These are tough questions, and a good computer scientist spends more time <em>thinking</em> about the design than the actual coding. A good design makes the project scalable and fits a more general problem, which enables future extensions.</p>
+
+<p>This is why in CS1 we have so many extra credit options. It rewards students who implement good designs &#8211; if you have, you won&#8217;t have to change very much code to do the extra credit options on the labs.</p>
+
+<p>But before we talk about the design principles around object oriented programming, we need to discuss one last concept: inheritance.</p>
+
+<h2 id="inheritance">Inheritance</h2>
+
+<p>As you know, in Python, <strong>everything is an object</strong>. But we&#8217;ve learned that objects are always instances of classes. So where do all these classes come from? They all come from an uber-class called <code>object</code>. This class is the parent class from which every other class spawns.</p>
+
+<p>So why would we use inheritance (other than the fact that it&#8217;s already built into Python). Let&#8217;s go back to our student example. We have this <code>Student</code> class, where each student has some properties. Let&#8217;s build a model to predict given some factors like weather how many students will show up to class.</p>
+
+<p>We all know there are different types of students. For the sake of this model, let&#8217;s assume there are three types of students: slackers, indifferents, and try-hards. Now comes the tricky part: each student has his or her own formula to determine whether to attend class.</p>
+
+<p>Whenever you begin designing a class, you should start grouping together large common elements. This is kind of like those brainstorming web-diagrams when you begin writing an essay.</p>
+
+<p>We certainly need a <code>Student</code> class, as that&#8217;s what we&#8217;re dealing with. What is the integral information for each <code>Student</code>? They probably have a <code>gpa</code>, a <code>grade</code> associated with CS1 so far, and a <code>major</code>. Students who are majors in Computer Science may weight CS1 with more importance than non-majors. Okay, with that information here is our <code>Student</code> class.</p>
+
+<pre><code>class Student(object):
+    '''Defines the Student class, descriptive of a Dartmouth student.'''
+
+    def __init__(self, gpa=3.0, grade=85, major='Economics'):
+        self.gpa = gpa
+        self.major = major
+        self.grade = grade
+</code></pre>
+
+<p>You&#8217;ll notice something different about the class declaration.</p>
+
+<pre><code>class Student(object):
+</code></pre>
+
+<p>instead of the usual</p>
+
+<pre><code>class Student:
+</code></pre>
+
+<p>This means that <code>Student</code> is a child class of <code>object</code>; in otherwords, every <code>Student</code> object has all the methods that any instance of the <code>object</code> class has. This is the super class that all Python objects descend from. In Python, this is considered better style than the implicit header.</p>
+
+<p>Now, as we discussed above, there are three separate types of students. Let&#8217;s go ahead and make the child classes.</p>
+
+<pre><code>class Slacker(Student):
+    '''Defines the slacker student.'''
+
+    def go_class(self):
+        return false            
+</code></pre>
+
+<p>Wow, that was pretty simple. As it turns out, a slacker student never goes to class. The important thing here is that by being a subclass of <code>Student</code>, all <code>Slacker</code> objects <em>automatically</em> get access to all methods and instance variables of the <code>Student</code> class! So you could make a new <code>Slacker</code> object simply by doing</p>
+
+<pre><code>fratbro = Slacker(2.5, 77, 'Alcohol')
+</code></pre>
+
+<p>And we have a new object! It even inherits the <code>__init__</code> method. The good student class is easy, too.</p>
+
+<pre><code>class TryHard(Student):
+    '''Defines the model student.'''
+
+    def go_class(self):
+        return true
+</code></pre>
+
+<p>Okay, let&#8217;s talk about the class that affects 99% of us. The average student.</p>
+
+<pre><code>class Average(Student):
+    '''Defines the typical Dartmouth student.'''
+
+    def go_class(self, weather=35):
+        return not (self.gpa &gt; 3.8 or self.grade &gt; 99 or weather &lt; -15)
+</code></pre>
+
+<p>So the average student makes the decision based on a combination of factors including her grade point average, her grade in the class, and the weather on that particular day.</p>
+
+<pre><code>&gt;&gt;&gt; bob = Average(4.0, 80, 40)
+&gt;&gt;&gt; print bob.go_class()
+False
+</code></pre>
+
+<h2 id="designpatterns">Design Patterns</h2>
+
+<p>The concept of inheritance can be confusing at first, but it isn&#8217;t too bad once you get used to it: <strong>A subclass automatically gets all the methods and instance variables of the parent class</strong>.</p>
+
+<p>The harder question is how to <em>design</em> the class breakdown. How did we decide that <code>Student</code> would be the parent class and that there would be three subclasses. For that matter, how did we even decide that there <em>would</em> be a parent class? After all, it&#8217;s not necessary for all problems.</p>
+
+<p>For your labs, you will have to practice good object oriented design which involves thinking about</p>
+
+<ul>
+<li>what classes you&#8217;ll have</li>
+<li>what the relationships between the classes are,</li>
+<li>and which methods and instance variables are located in which class.</li>
+</ul>
+
+<p>This is more of an art than a science, and you will get a feel for this as you do more object oriented programming. For those of you continuing with computer science, you will cover this in great depth in CS10, which teaches a purely object oriented language known as Java.</p>
+
+<p>For now, let&#8217;s discuss some general guidelines.</p>
+
+<ol>
+<li>Group common elements and functions together.</li>
+</ol>
+
+<p>If there is a great commonality between things that have many different functions, then that is a great place to create a class. This rule led to the decision to create a <code>Student</code> class. A <code>Student</code> object needs to know many things, and they have many methods.</p>
+
+<ol>
+<li>Carve out the differences.</li>
+</ol>
+
+<p>Seldom will a single class obviate all your needs for the entire problem. Usually it is more complicated than that. Find out and list all the different functionalities your class has to take care of.</p>
+
+<p>Sometimes, you&#8217;ll have to create a new class or a subclass to take care of them. Othertimes you won&#8217;t have to. When to do which is a tough choice. Again, there is no right or wrong answer here. In this problem, I decided to make different classes instead of different methods.</p>
+
+<p>I could have done the following instead</p>
+
+<pre><code>class Student(object):
+
+    def average_go_class(self):
+        # Some code here
+        pass
+
+    def slacker_go_class(self):
+        # Some code here
+        pass
+
+    def tryhard_go_class(self):
+        # Some code here
+        pass
+</code></pre>
+
+<p>I could have broken it up into methods instead. Why did I choose a subclass? I decided that, given the nature of the problem, the differences between the types of students would not simply be limited to the way they decide to go to class. The way they do homework, engage in extra curriculars, etc would all be different. These differences, to me, were large enough to warrant a separate class.</p>
+
+<ol>
+<li>Think about generality.</li>
+</ol>
+
+<p>I&#8217;ve stated this above, but this is again why we encourage you to do extra credit. Imagine an extra credit option were now to add four other methods to the three different types of students: <code>study</code>, <code>extra_curriculars</code>, <code>drink</code>, <code>sleep</code>.</p>
+
+<p>If I had not made separate classes, it would quickly become a really messy class. I&#8217;d have to add a separate instance variable called <code>type</code> within the <code>Student</code> class so that each object could remember what type of student it was. Even worse, I&#8217;d have to do something like this.</p>
+
+<pre><code>def study(self):
+    if self.type == 'Average':
+        self.average_study()
+    elif self.type == 'Slacker':
+        self.slack_study()
+    else
+        self.hard_study()
+</code></pre>
+
+<p>And <em>every</em> method would have to look like that. That&#8217;s really awful, and it&#8217;s a bad way to extend the class. So as we add more general features, we quickly realize that this is becoming unmanageable. That is a classic symptom of a <em>design problem</em>.</p>
+
+<p>The best thing to do here is sit back and redesign. By making minor design changes, the entire coding process becomes much simpler and easier. An added benefit is that a good design also makes the code more readable, which is important to convey professionalism and for others reading your code (ahem &#8211; those of us that <em>grade</em>, for example).</p>
+
+<p>If you&#8217;re not completely clear on all of this, don&#8217;t worry about it. The only way to get better is to <em>practice</em>, and every lab from now on will provide you a chance to do that. In recitation we&#8217;ll be discussing object oriented design so you can get further ideas as to how to approach problems.</p>
+</body>
+</html>

@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Recitation2</title>
+<link rel=stylesheet type=text/css href="../static/css/style.css">
+</head>
+<body>
+<h1 id="style">Style</h1>
+
+<h2 id="whystyle">Why Style</h2>
+
+<p>What do we mean when we say coding style? Think of style as an error of form, not function. Although &#8220;Wrecking Ball&#8221; was a fine song (function), the performance that accompanied it&#8230; not so fine (form). It&#8217;s the difference between using a double negative (grammatically incorrect) versus ending a sentence with a preposition (bad form).</p>
+
+<p>Python, like all coding languages, has its own style conventions, and it&#8217;s important that you follow them. Style is critical to make sure your code is readable, that it is polished and presentable, and most importantly, it conveys that you are a competent coder.</p>
+
+<p>In Wall Street they judge you by the quality of your suit; in Silicon Valley, they judge you by the quality of your code. And a critical aspect of that is how nicely it is presented.</p>
+
+<h2 id="pep8">PEP 8</h2>
+
+<p>The standard documentation that defines all Python style guides is called <a href="http://legacy.python.org/dev/peps/pep-0008/">PEP 8</a>; there are other PEPs, like <a href="http://legacy.python.org/dev/peps/pep-0100/">PEP 100</a> which determine how to handle Unicode strings, and <a href="http://legacy.python.org/dev/peps/pep-0020/">PEP 20</a> which is the &#8220;Zen of Python&#8221;. While these are all interesting, and you should read them if you are truly passionate about Python, PEP 8 is the one that concerns us here.</p>
+
+<p>There are several things from PEP8 that I want to emphasize.</p>
+
+<p><strong>1. Soft Tabs</strong></p>
+
+<p>Soft tabs is a way to convert the tab character to spaces; in Python, spaces are preferred to tab. So soft tabs enables you to quickly add 4 spaces. <a href="http://www.dotkam.com/2007/03/21/changing-tabs-to-spaces-in-eclipse/">Here</a> is a guide to do this in Eclipse.</p>
+
+<p><strong>2. Line Length</strong></p>
+
+<p>Remember those really bad websites that have long lines of text that make you scroll <em>sideways</em> to read them? We hate that. We really, really hate that. It&#8217;s a computer science pet peeve.</p>
+
+<p>In honor of our hatred, we have a restriction to 100 character limit for all lines of code. Single line commments, however, can only go up to 80 characters. Docstrings, which we will discuss further on in this section, and can only go up to 72 characters.</p>
+
+<p><strong>3. Import Statements</strong></p>
+
+<p>Import statements should be alphabetically arranged and on separate lines.</p>
+
+<p>No:</p>
+
+<pre><code>import os, sys, cs1lib
+</code></pre>
+
+<p>Yes:</p>
+
+<pre><code>import cs1lib
+import os
+import sys
+</code></pre>
+
+<p>In Python, however, there are 2 ways to import. One is the above <code>import x</code> fashion. The other is <code>from x import y</code>. The first style should always precede the second. Here is an example.</p>
+
+<pre><code>import os
+import sys
+
+
+from cs1lib import *
+</code></pre>
+
+<p>Notice the two lines of indentation between the two types of import.</p>
+
+<p><strong>4. Naming</strong></p>
+
+<p>Functions and methods should be</p>
+
+<pre><code>lowercase_separated_by_underscores
+</code></pre>
+
+<p>Constants should be in </p>
+
+<pre><code>ALL_CAPS_WORDS_SEPARATED_BY_UNDERSCORES
+</code></pre>
+
+<p>Classes (which you will learn about later in the term)</p>
+
+<pre><code>CamelCaseLikeSo
+</code></pre>
+
+<h2 id="documentation">Documentation</h2>
+
+<p>Documentation covers all the other aspects of style, from comments to larger descriptions of what each function does and the file does. Block comments and docstrings both begin with a triple quotation mark (single or double is accepted). For more details on documentation, visit <a href="http://legacy.python.org/dev/peps/pep-0257/">PEP 257</a> which covers all docstring conventions.</p>
+
+<p>Docstrings can either be multi-line</p>
+
+<pre><code>'''
+Example multi-line docstring in Python.
+Many lines. Very documentation.
+'''
+</code></pre>
+
+<p>or single-line.</p>
+
+<pre><code>'''Single line docstring in Python.'''
+</code></pre>
+
+<p>Every file should begin with a docstring explaining the purpose of the file and other meta-data like the author name, date it was written. Let&#8217;s create a sample docstring for the CS1 library.</p>
+
+<pre><code>'''
+Defines graphics functions used for CS 1.
+Provides wrapper functions around more complex PyQt functions.
+Author:  Weifu Wang
+Date:    August 2012
+Version: 1.0
+'''
+</code></pre>
+
+<p>That would go at the very top of the <code>cs1Library.py</code> file.</p>
+
+<p>Docstrings for functions serve a different purpose. With a single glance, they explain everything that function does. Here are the critical components of a function docstring:</p>
+
+<ul>
+<li>Description for what the function does, and what is its purpose.</li>
+<li>Parameters for the function, explained out. Exclude if function does not take any</li>
+<li>Return value. Exclude if function does not return anything.</li>
+</ul>
+
+<p>Let&#8217;s take an example of whether we should go to CS1 class. In the beginning, we start with a simple model that always tells us to always attend class.</p>
+
+<pre><code>def goToClass():
+    '''Outputs whether to go to CS1.'''
+    print &quot;Of course!&quot;
+</code></pre>
+
+<p>But this ignores the realities of life! Weather (ugh, Winter), how far you have to walk (Life Sciences! Life is too hard&#8230;), whether you can afford to skip class, and whether it was a pong night yesterday (#hangover &#8211; don&#8217;t lie, you know this to be true). So let&#8217;s make a more complex model.</p>
+
+<pre><code>def goToClass(weather, location, pong, grade):
+    '''
+    Outputs whether to attend CS1 class based on many factors.
+
+    Keyword arguments:
+    weather -- A float in Farenheit for the temperature outside
+    location -- A string with the name of the building in which
+                CS1 class will be held
+    pong -- A boolean value of whether it's a pong night
+    grade -- A float for the grade currently held in the class
+    '''
+    pass
+</code></pre>
+
+<p>But this is silly! Why would we print to the screen when we could <em>return</em> a boolean. Let&#8217;s add this fix.</p>
+
+<pre><code>def goToClass(weather, location, pong, grade):
+    '''
+    Outputs whether to attend CS1 class based on many factors.
+
+    Keyword arguments:
+    weather -- A float in Farenheit for the temperature outside
+    location -- A string with the name of the building in which
+                CS1 class will be held
+    pong -- A boolean value of whether it's a pong night
+    grade -- A float for the grade currently held in the class
+
+    Keyword returns:
+    A boolean whether you should go to CS1 class.
+    '''
+    pass
+</code></pre>
+
+<p>And there is a complete docstring example. Besides, this, you should use inline comments to describe any particularly complicated lines of code. What counts as a complicated line of code? This is something that you&#8217;ll learn over time. For now, think of it this way: if there&#8217;s a line of code that is not obvious, it deserves a comment.</p>
+
+<h2 id="automaticstylechecker">Automatic Style Checker</h2>
+
+<p>To make your life easier, there is an automatic style checker that makes sure your code follows all the conventions of PEP8.</p>
+
+<p>The site allows direct file uploads, and it will return to you the direct feedback for all the errors. Like golf, a better file receives less feedback, with a perfect file receiving <em>no</em> feedback. Check out the site at <a href="http://www.python-style.com">python-style.com</a>.</p>
+
+<p>Things <em>not</em> covered by the automatic style checker that you still should watch out for.</p>
+
+<ul>
+<li>Variable names &#8211; you should have good, descriptive variable names</li>
+<li>Lack of comments &#8211; any particularly tricky lines of code should be described with in-line or single-line comments</li>
+</ul>
+
+<h2 id="resources">Resources</h2>
+
+<p>Want a much easier to read guide?</p>
+
+<p>Read David Gooder&#8217;s <a href="http://python.net/~goodger/projects/pycon/2007/idiomatic/handout.html">amazing style guide</a>.</p>
+</body>
+</html>
